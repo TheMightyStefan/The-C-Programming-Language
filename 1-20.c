@@ -7,13 +7,12 @@ int main ()
     int charsBehindTabStop = 0;
     while ((character = getchar()) != EOF) {
         if (character == '\t') {
-            while (charsBehindTabStop < TABSTOP)
-                {
-                    printf(" ");
-                    charsBehindTabStop++;
+            while (charsBehindTabStop < TABSTOP) {
+                printf(" ");
+                charsBehindTabStop++;
                 }
-        if (charsBehindTabStop == TABSTOP)
-            charsBehindTabStop = 0;
+            if (charsBehindTabStop == TABSTOP)
+                charsBehindTabStop = 0;
         } else {
             printf("%c", character);
             charsBehindTabStop++;
