@@ -11,12 +11,13 @@ int main ()
                 printf(" ");
                 charsBehindTabStop++;
             }
-            if (charsBehindTabStop == TABSTOP)
-                charsBehindTabStop = 0;
         } else {
             printf("%c", character);
             charsBehindTabStop++;
         }
+        if (charsBehindTabStop == TABSTOP)
+            charsBehindTabStop = 0;
     }
     return 0;
 }
+ 
