@@ -12,10 +12,10 @@ int main ()
                     printf(" ");
                     charsBehindTabStop++;
                 }
-                if (charsBehindTabStop == TABSTOP)
-                charsBehindTabStop = 0;
+        if (charsBehindTabStop == TABSTOP)
+            charsBehindTabStop = 0;
         } else {
-            printf("%c",character);
+            printf("%c", character);
             charsBehindTabStop++;
         }
     }
