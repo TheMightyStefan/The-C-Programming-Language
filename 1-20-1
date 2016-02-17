@@ -1,0 +1,24 @@
+#include <stdio.h>
+#define TABSTOP 8
+
+int main ()
+{
+    char string[100];
+    int index, charsBehindTabStop = 0;
+    while ((string[index] = getchar()) != EOF) {
+        if (string[index] == '\t') {
+            while (charsBehindTabStop < TABSTOP) {
+                charsBehindTabStop++;
+                string[++index] = ' ';
+            }
+        } else {
+            charsBehindTabStop++;
+        }
+        if (charsBehindTabStop == TABSTOP)
+            charsBehindTabStop = 0;
+        index++;
+    }
+    string[++index] = '\0';
+    printf("%s",string);
+    return 0;
+}
