@@ -1,6 +1,8 @@
 #include <stdio.h>
 #define TABSTOP 8
 
+// E plctisitoare problema.
+
 int main ()
 {
     int blanksRow = 0;
@@ -16,7 +18,7 @@ int main ()
         if (charsBehindTabStop == TABSTOP) {
             charsBehindTabStop = 0;
             if (blanksRow == 1) {
-                printf('\t');
+                putchar('\t');
             }
         } else {
             charsBehindTabStop++;
