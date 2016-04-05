@@ -7,7 +7,7 @@ int main ()
     char character;
     int charsBehindTabStop = 0;
     while ((character = getchar()) != EOF) {
-        if (character == "*") {
+        if (character == " ") {
             OK = 1;
             continue;
         }
@@ -20,8 +20,10 @@ int main ()
             }
         if (charsBehindTabStop == TABSTOP && OK == 1) {
             charsBehindTabStop = 0;
-            printf("\t");
+            printf("*");
         }
+        if (character == " ")
+            printf("*");
     }
     return 0;
 }
