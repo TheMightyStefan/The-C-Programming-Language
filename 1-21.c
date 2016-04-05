@@ -12,7 +12,7 @@ int main ()
         if (character == ' ') {
             blanksRow = 1;
         } else {
-            printf("%c",character);
+            putchar(character);
             blanksRow = 0;
         }
         if (charsBehindTabStop == TABSTOP) {
