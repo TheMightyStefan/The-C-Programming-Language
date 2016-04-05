@@ -8,7 +8,7 @@ int main ()
     int charsBehindTabStop = 0;
     while ((character = getchar()) != EOF) {
         if (character == " ") {
-            blanksrow = 1;
+            blanksRow = 1;
         } else {
             printf("%c",character);
             blanksRow = 0;
@@ -17,7 +17,9 @@ int main ()
             charsBehindTabStop = 0;
             if (blanksRow == 1) {
                 printf("\t");
-            } else charsBehindTabStop++;
+            } else {
+                charsBehindTabStop++;
+            }
         }
     }
     return 0;
