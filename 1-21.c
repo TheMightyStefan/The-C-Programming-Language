@@ -1,7 +1,7 @@
 #include <stdio.h>
 #define TABSTOP 8
 
-// E plctisitoare problema.
+// E plictisitoare problema.
 
 int main ()
 {
@@ -12,7 +12,6 @@ int main ()
         if (character == ' ') {
             blanksRow = 1;
         } else {
-            putchar(character);
             blanksRow = 0;
         }
         if (charsBehindTabStop == TABSTOP) {
@@ -23,6 +22,8 @@ int main ()
         } else {
             charsBehindTabStop++;
         }
+        if (blanksRow == 0)
+            putchar(character);
     }
     return 0;
 }
