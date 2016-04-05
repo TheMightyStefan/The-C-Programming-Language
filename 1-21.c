@@ -15,14 +15,11 @@ int main ()
             printf("%c",character);
             blanksRow = 0;
         }
-        while (charsBehindTabStop < TABSTOP) {
-            charsBehindTabStop++;
-        }
         if (charsBehindTabStop == TABSTOP) {
             charsBehindTabStop = 0;
             if (blanksRow == 1) {
                 printf("\t");
-            }
+            } else charsBehindTabStop++;
         }
     }
     return 0;
