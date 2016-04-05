@@ -9,11 +9,9 @@ int main ()
     while ((character = getchar()) != EOF) {
         if (character == " " && blanksRow == 1) {
             blanksRow = 1;
-            continue;
         } else if (character == " " && blanksRow == 0) {
             blanksRow = 1;
-            continue;
-        } else {
+        } else if (character != " ") {
             printf("%c",character);
             blanksRow = 0;
         }
