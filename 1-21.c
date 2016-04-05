@@ -3,27 +3,29 @@
 
 int main ()
 {
-    int OK = 0;
+    int blanksRow = 0;
     char character;
     int charsBehindTabStop = 0;
     while ((character = getchar()) != EOF) {
-        if (character == " ") {
-            OK = 1;
+        if (character == " " && blanksRow == 1) {
+            blanksRow = 1;
             continue;
-        }
-        else {
-            printf("%c", character);
-            OK = 0;
+        } else if (character == " " && blanksRow == 0) {
+            blanksRow = 1;
+            continue;
+        } else {
+            printf("%c",character);
+            blanksRow = 0;
         }
         while (charsBehindTabStop < TABSTOP) {
-                charsBehindTabStop++;
-            }
-        if (charsBehindTabStop == TABSTOP && OK == 1) {
-            charsBehindTabStop = 0;
-            printf("*");
+            charsBehindTabStop++;
         }
-        if (character == " ")
-            printf("*");
+        if (charsBehindTabStop == TABSTOP) {
+            charsBehindTabStop = 0;
+            if (blanksRow == 1) {
+                printf("\t");
+            }
+        }
     }
     return 0;
 }
