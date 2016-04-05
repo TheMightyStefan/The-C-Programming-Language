@@ -17,7 +17,11 @@ int main ()
             printf("%c",character);
             blanksRow = 0;
         }
-         charsBehindTabStop++;
+        if (charsBehindTabStop == TABSTOP) {
+            charsBehindTabStop = 0;
+        } else {
+            charsBehindTabStop++;
+        }
     }
     return 0;
 }
