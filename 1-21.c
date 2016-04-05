@@ -7,11 +7,9 @@ int main ()
     char character;
     int charsBehindTabStop = 0;
     while ((character = getchar()) != EOF) {
-        if (character == " " && blanksRow == 1) {
-            blanksRow = 1;
-        } else if (character == " " && blanksRow == 0) {
-            blanksRow = 1;
-        } else if (character != " ") {
+        if (character == " ") {
+            blanksrow = 1;
+        } else {
             printf("%c",character);
             blanksRow = 0;
         }
