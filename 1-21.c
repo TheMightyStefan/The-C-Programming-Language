@@ -5,13 +5,21 @@
 
 int main ()
 {
-    int blanksRow = 0;
+    int blanksRow = 0, blanks = 0;
     char character;
     int charsBehindTabStop = 0;
     while ((character = getchar()) != EOF) {
         if (character == ' ') {
+            blanks++;
             blanksRow = 1;
+            continue;
         } else {
+            if (blanks > 0) {
+                while (blanks > 0) {
+                    putchar(' ');
+                    blanks--;
+                }
+            }
             blanksRow = 0;
         }
         if (charsBehindTabStop == TABSTOP) {
