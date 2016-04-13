@@ -14,7 +14,7 @@ int main ()
             blanksRow = 1;
             continue;
         } else {
-            if (blanks > 0) {
+            if (blanks > 0 && blanksRow == 1) {
                 while (blanks > 0) {
                     putchar(' ');
                     blanks--;
