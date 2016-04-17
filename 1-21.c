@@ -5,20 +5,20 @@
 
 int main ()
 {
-    int blanksRow = 0, blanks = 0;
+    int markerBlanksRow = 0, blanksInTheRow = 0;
     char character;
     int charsBehindTabStop = 0;
     while ((character = getchar()) != EOF) {
         if (character == ' ') {
-            blanks++;
+            blanksInTheRow++;
             charsBehindTabStop++;
-            blanksRow = 1;
+            markerBlanksRow = 1;
         } else {
-            if (blanksRow == 1 && blanks > 0) {
-                blanksRow = 0;
-                while (blanks > 0) {
+            if (markerBlanksRow == 1 && blanksInTheRow > 0) {
+                markerBlanksRow = 0;
+                while (blanksInTheRow > 0) {
                     putchar(' ');
-                    blanks--;
+                    blanksInTheRow--;
                 }
             } else {
                 charsBehindTabStop++;
@@ -27,8 +27,8 @@ int main ()
         }
         if (charsBehindTabStop == TABSTOP) {
             charsBehindTabStop = 0;
-            blanks = 0;
-            if (blanksRow == 1) {
+            blanksInTheRow = 0;
+            if (markerBlanksRow == 1) {
                 putchar('\t');
             }
         }
