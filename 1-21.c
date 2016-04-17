@@ -1,34 +1,31 @@
 #include <stdio.h>
 #define TABSTOP 8
 
-// E plictisitoare problema.
-
 int main ()
 {
-    int markerBlanksRow = 0, blanksInTheRow = 0;
+    int blanksInTheRow, rowOfBlanksMarker, charsBehindTabstop;
     char character;
-    int charsBehindTabStop = 0;
     while ((character = getchar()) != EOF) {
-        if (character == ' ') {
+        if (character == '*') {
             blanksInTheRow++;
-            charsBehindTabStop++;
-            markerBlanksRow = 1;
+            rowOfBlanksMarker = 1;
         } else {
-            if (markerBlanksRow == 1 && blanksInTheRow > 0) {
-                markerBlanksRow = 0;
+            if (rowOfBlanksMarker == 1) {
                 while (blanksInTheRow > 0) {
-                    putchar(' ');
+                    putchar('*');
                     blanksInTheRow--;
+                    charsBehindTabstop++;
                 }
+                rowOfBlanksMarker = 0;
             } else {
-                charsBehindTabStop++;
                 putchar(character);
+                charsBehindTabstop++;
             }
         }
-        if (charsBehindTabStop == TABSTOP) {
-            charsBehindTabStop = 0;
+        if (charsBehindTabstop == TABSTOP) {
+            charsBehindTabstop = 0;
             blanksInTheRow = 0;
-            if (markerBlanksRow == 1) {
+            if (rowOfBlanksMarker == 1) {
                 putchar('\t');
             }
         }
