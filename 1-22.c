@@ -6,7 +6,7 @@ int main ()
 {
     char line[LAST_COLUMN_OF_INPUT];
     char character;
-    int charOnTheLine = 0, blanksBeforeFold;
+    int charOnTheLine = 0, blanksBeforeFold = 0;
     while ((character = getchar()) != EOF) {
         if (charOnTheLine < LAST_COLUMN_OF_INPUT) {
             line[charOnTheLine] = character;
