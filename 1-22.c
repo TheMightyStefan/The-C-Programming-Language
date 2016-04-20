@@ -20,8 +20,14 @@ int main ()
            for (charOnTheLine = 0; charOnTheLine < (LAST_COLUMN_OF_INPUT - blanksBeforeFold); charOnTheLine ++) {
                 putchar(line[charOnTheLine]);
            }
+           blanksBeforeFold = 0;
            charOnTheLine = 0;
            putchar('\n');
+        }
+    }
+    if ((character = getchar()) == EOF) {
+        for (int index = 0; index < charOnTheLine; index++) {
+                putchar(line[index]);
         }
     }
     return 0;
