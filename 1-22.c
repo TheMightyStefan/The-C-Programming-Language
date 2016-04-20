@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
-#define LAST_COLUMN_OF_INPUT 15
+#define LAST_COLUMN_OF_INPUT 5
 
 int main ()
 {
@@ -11,6 +11,14 @@ int main ()
         if (charOnTheLine < LAST_COLUMN_OF_INPUT) {
             line[charOnTheLine] = character;
             charOnTheLine++;
+        }
+        if (character == '\n') {
+            for (int index = 0; index < charOnTheLine; index++) {
+                putchar(line[index]);
+            }
+                blanksBeforeFold = 0;
+                charOnTheLine = 0;
+                putchar('\n');
         }
         if (charOnTheLine == LAST_COLUMN_OF_INPUT) {
            while (isspace(line[charOnTheLine-1])) {
