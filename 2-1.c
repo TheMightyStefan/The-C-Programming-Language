@@ -6,11 +6,12 @@ long long pow2(int exponent)
 	 int pow = 1;
 	 while (exponent > 0) {
 		pow *= 2;
+		exponent --;
 	 }
-	return pow;
+	 return pow;
 }
 
-int main ()
+int main()
 {
 	
 	printf("CHAR : -%lld     -----     %lld\n", pow2((sizeof(char) * 8) - 1), pow2((sizeof(char) * 8) - 1) - 1);
