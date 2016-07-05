@@ -12,11 +12,17 @@ unsigned long long pow2(int exponent) {
 
 int main()
 {	unsigned long long max_range = 0, min_range = 0;	
-	// char 
+	//char 
 	min_range = -pow2((sizeof(char) * 8) - 1);
 	max_range =  pow2((sizeof(char) * 8) - 1) - 1;
 
 	printf("\nCHAR : %lld    ----    %lld\n", min_range, max_range);
+
+	//unsigned char
+	min_range = 0;
+	max_range = (pow2(sizeof(unsigned char) * 4) - 1) * (pow2(sizeof(unsigned char) * 4) + 1);
+
+	printf("\nUNSIGNED CHAR : %lld    ----    %lld\n", min_range, max_range);
 
 	//short
 	min_range = -pow2((sizeof(short) * 8) - 1);
@@ -24,11 +30,23 @@ int main()
 
 	printf("SHORT : %lld    ----    %lld\n", min_range, max_range);
 
+	//unsigned short
+	min_range = 0;
+	max_range = (pow2(sizeof(unsigned short) * 4) - 1) * (pow2(sizeof(unsigned short) * 4) + 1);
+
+	printf("UNSIGNED SHORT : %lld    ----    %lld\n", min_range, max_range);
+
 	//int
 	min_range = -pow2((sizeof(int) * 8) - 1);
 	max_range =  pow2((sizeof(int) * 8) - 1) - 1;
 
 	printf("INT : %lld    ----    %lld\n", min_range, max_range);
+
+	//unsigned int
+	min_range = 0;
+	max_range = (pow2(sizeof(unsigned int) * 4) - 1) * (pow2(sizeof(unsigned int) * 4) + 1
+
+	printf("UNSIGNED INT : %lld    ----    %lld\n", min_range, max_range);
 
 	//long
 	min_range = -pow2((sizeof(long) * 8) - 1);
