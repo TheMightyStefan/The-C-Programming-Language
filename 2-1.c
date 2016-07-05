@@ -44,13 +44,13 @@ int main()
 
 	//unsigned long
 	min_range = 0;
-	max_range = pow2(sizeof(unsigned long) * 8) - 1;
+	max_range = (pow2(sizeof(unsigned long) * 4) - 1) * (pow2(sizeof(unsigned long) * 4) + 1);
 
 	printf("UNSIGNED LONG : %llu    ----    %llu\n", min_range, max_range);
 	
 	//unsigned long long 
 	min_range = 0;
-	max_range = pow2(sizeof(unsigned long long) * 8) - 1;
+	max_range = (pow2(sizeof(unsigned long long) * 4) - 1) * (pow2(sizeof(unsigned long long) * 4) + 1);
 
 	printf("UNSIGNED LONG LONG : %llu    ----    %llu\n", min_range, max_range);
 
