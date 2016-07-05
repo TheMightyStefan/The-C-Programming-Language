@@ -2,77 +2,77 @@
 #include <stdlib.h>
 
 unsigned long long pow2(int exponent) {
-	 unsigned long long pow = 1;
-	 while (exponent > 0) {
-		pow *= 2;
-		exponent--;
-	 }
-	 return pow;
+     unsigned long long pow = 1;
+     while (exponent > 0) {
+        pow *= 2;
+        exponent--;
+     }
+     return pow;
 }
 
 int main()
 {
-	unsigned long long max_range = 0, min_range = 0;	
+    unsigned long long max_range = 0, min_range = 0;    
 
-	//char 
-	min_range = -pow2((sizeof(char) * 8) - 1);
-	max_range =  pow2((sizeof(char) * 8) - 1) - 1;
+    //char 
+    min_range = -pow2((sizeof(char) * 8) - 1);
+    max_range =  pow2((sizeof(char) * 8) - 1) - 1;
 
-	printf("\nCHAR : %lld    ----    %lld\n", min_range, max_range);
+    printf("\nCHAR : %lld    ----    %lld\n", min_range, max_range);
 
-	//unsigned char
-	min_range = 0;
-	max_range = pow2(sizeof(unsigned char) * 8) - 1;
+    //unsigned char
+    min_range = 0;
+    max_range = pow2(sizeof(unsigned char) * 8) - 1;
 
-	printf("UNSIGNED CHAR : %lld    ----    %lld\n", min_range, max_range);
+    printf("UNSIGNED CHAR : %lld    ----    %lld\n", min_range, max_range);
 
-	//short
-	min_range = -pow2((sizeof(short) * 8) - 1);
-	max_range =  pow2((sizeof(short) * 8) - 1) - 1;
+    //short
+    min_range = -pow2((sizeof(short) * 8) - 1);
+    max_range =  pow2((sizeof(short) * 8) - 1) - 1;
 
-	printf("SHORT : %lld    ----    %lld\n", min_range, max_range);
+    printf("SHORT : %lld    ----    %lld\n", min_range, max_range);
 
-	//unsigned short
-	min_range = 0;
-	max_range = pow2(sizeof(unsigned short) * 8) - 1;
+    //unsigned short
+    min_range = 0;
+    max_range = pow2(sizeof(unsigned short) * 8) - 1;
 
-	printf("UNSIGNED SHORT : %lld    ----    %lld\n", min_range, max_range);
+    printf("UNSIGNED SHORT : %lld    ----    %lld\n", min_range, max_range);
 
-	//int
-	min_range = -pow2((sizeof(int) * 8) - 1);
-	max_range =  pow2((sizeof(int) * 8) - 1) - 1;
+    //int
+    min_range = -pow2((sizeof(int) * 8) - 1);
+    max_range =  pow2((sizeof(int) * 8) - 1) - 1;
 
-	printf("INT : %lld    ----    %lld\n", min_range, max_range);
+    printf("INT : %lld    ----    %lld\n", min_range, max_range);
 
-	//unsigned int
-	min_range = 0;
-	max_range = pow2(sizeof(unsigned int) * 8) - 1;
+    //unsigned int
+    min_range = 0;
+    max_range = pow2(sizeof(unsigned int) * 8) - 1;
 
-	printf("UNSIGNED INT : %lld    ----    %lld\n", min_range, max_range);
+    printf("UNSIGNED INT : %lld    ----    %lld\n", min_range, max_range);
 
-	//long
-	min_range = -pow2((sizeof(long) * 8) - 1);
-	max_range =  pow2((sizeof(long) * 8) - 1) - 1;
+    //long
+    min_range = -pow2((sizeof(long) * 8) - 1);
+    max_range =  pow2((sizeof(long) * 8) - 1) - 1;
 
-	printf("LONG : %lld    ----    %lld\n", min_range, max_range);
+    printf("LONG : %lld    ----    %lld\n", min_range, max_range);
 
-        //unsigned long
-        min_range = 0;
-        max_range = (pow2(sizeof(unsigned long) * 4) - 1) * (pow2(sizeof(unsigned long) * 4) + 1);
+    //unsigned long
+     min_range = 0;
+     max_range = (pow2(sizeof(unsigned long) * 4) - 1) * (pow2(sizeof(unsigned long) * 4) + 1);
 
-        printf("UNSIGNED LONG : %llu    ----    %llu\n", min_range, max_range);
+    printf("UNSIGNED LONG : %llu    ----    %llu\n", min_range, max_range);
 
-	//long long
-	min_range = -pow2((sizeof(long long) * 8) - 1);
-	max_range =  pow2((sizeof(long long) * 8) - 1) - 1;
+    //long long
+    min_range = -pow2((sizeof(long long) * 8) - 1);
+    max_range =  pow2((sizeof(long long) * 8) - 1) - 1;
 
-	printf("LONG LONG : %lld    ----    %lld\n", min_range, max_range);
-	
-	//unsigned long long 
-	min_range = 0;
-	max_range = (pow2(sizeof(unsigned long long) * 4) - 1) * (pow2(sizeof(unsigned long long) * 4) + 1);
+    printf("LONG LONG : %lld    ----    %lld\n", min_range, max_range);
+    
+    //unsigned long long 
+    min_range = 0;
+    max_range = (pow2(sizeof(unsigned long long) * 4) - 1) * (pow2(sizeof(unsigned long long) * 4) + 1);
 
-	printf("UNSIGNED LONG LONG : %llu    ----    %llu\n", min_range, max_range);
+    printf("UNSIGNED LONG LONG : %llu    ----    %llu\n", min_range, max_range);
 
-	return 0;
+    return 0;
 } 
