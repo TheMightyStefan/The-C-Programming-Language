@@ -11,7 +11,9 @@ unsigned long long pow2(int exponent) {
 }
 
 int main()
-{	unsigned long long max_range = 0, min_range = 0;	
+{
+	unsigned long long max_range = 0, min_range = 0;	
+
 	//char 
 	min_range = -pow2((sizeof(char) * 8) - 1);
 	max_range =  pow2((sizeof(char) * 8) - 1) - 1;
