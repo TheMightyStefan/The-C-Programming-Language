@@ -22,7 +22,7 @@ int main()
 	min_range = 0;
 	max_range = (pow2(sizeof(unsigned char) * 4) - 1) * (pow2(sizeof(unsigned char) * 4) + 1);
 
-	printf("\nUNSIGNED CHAR : %lld    ----    %lld\n", min_range, max_range);
+	printf("UNSIGNED CHAR : %lld    ----    %lld\n", min_range, max_range);
 
 	//short
 	min_range = -pow2((sizeof(short) * 8) - 1);
@@ -44,7 +44,7 @@ int main()
 
 	//unsigned int
 	min_range = 0;
-	max_range = (pow2(sizeof(unsigned int) * 4) - 1) * (pow2(sizeof(unsigned int) * 4) + 1
+	max_range = (pow2(sizeof(unsigned int) * 4) - 1) * (pow2(sizeof(unsigned int) * 4) + 1);
 
 	printf("UNSIGNED INT : %lld    ----    %lld\n", min_range, max_range);
 
