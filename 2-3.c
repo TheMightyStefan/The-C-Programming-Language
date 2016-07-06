@@ -6,7 +6,7 @@ int pow16(int exponent) {
     int pow = 1;
     if (exponent == 0) {
         return 1;
-    } else  { 
+    } else { 
         while (exponent > 0) {
              pow *= 16;
              exponent--;
@@ -17,43 +17,38 @@ int pow16(int exponent) {
 
 int htoi(char hexString[]) {
     int integer = 0;
-    int lenght = strlen(hexString);
-    if (hexString[0] == 0 && ((hexString[1] == 'x') || (hexString[1] = 'X'))) {
-        for (int i = 0; i < lenght - 1; i++) {
-            hexString[i] = hexString[i+1];
+    int length = strlen(hexString);
+    if (hexString[0] == 0 && (hexString[1] == 'x' || hexString[1] == 'X')) {
+        for (int i = 0; i < length - 1; i++) {
+            hexString[i] = hexString[i + 1];
         }
-        lenght -= 2;
+        length -= 2;
     }
-    for (int i = 0; i < lenght - 1; i++) {
+    for (int i = 0; i < length - 1; i++) {
         if (hexString[i] >= 0 && hexString[i] < 10) {
-            integer += hexString[i] * pow16(lenght - 1 - i);
-        } else switch (hexString[i]) {
-            case 'A' :
-                integer += 10 * pow16(lenght - 1 - i);
+            integer += hexString[i] * pow16(length - 1 - i);
+        } else 
+            switch (hexString[i]) {
+                case 'A' :
+                    integer += 10 * pow16(length - 1 - i);
+                    break;
+                case 'B' :
+                    integer += 11 * pow16(length - 1 - i);
+                    break;
+                case 'C' :
+                    integer += 12 * pow16(length - 1 - i);
                 break;
-
-            case 'B' :
-                integer += 11 * pow16(lenght - 1 - i);
-                break;
-
-            case 'C' :
-                integer += 12 * pow16(lenght - 1 - i);
-                break;
-        
-            case 'D' :
-                integer += 13 * pow16(lenght - 1 - i);
-                break;
-
-            case 'E' :
-                integer += 14 * pow16(lenght - 1 - i);
-                break;
-
-            case 'F' :
-                integer += 15 * pow16(lenght - 1 - i);
-                break;
+                case 'D' :
+                    integer += 13 * pow16(length - 1 - i);
+                    break;
+                case 'E' :
+                    integer += 14 * pow16(length - 1 - i);
+                    break;
+                case 'F' :
+                    integer += 15 * pow16(length - 1 - i);
+                    break;
          }
     }
-    printf("%d", lenght);
     return integer;
 }
 
