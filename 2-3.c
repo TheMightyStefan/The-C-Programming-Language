@@ -17,26 +17,28 @@ int pow16(int exponent) {
 }
 
 int htoi(char hexString[]) {
-    const int ascii_hex_dif = 'A' - 10;
-    int integer = 0;
-    int length = strlen(hexString);
+    const int asciiHexDiff = 'A' - 10;
+    int integerFromHex = 0;
+    int lengthOfHex = strlen(hexString);
     if (hexString[0] == '0' && (hexString[1] == 'x' || hexString[1] == 'X')) {
-            for (int i = 0; i < length - 1; i++) {
-            hexString[i] = hexString[i + 2];
-        }
-    length -= 2;
+            for (int index = 0; index < lengthOfHex - 1; index++) {
+                hexString[index] = hexString[index + 2];
+                if (index == lengthOfHex - 1) {
+                    hexString[index] = '\0';    
+                }
+            }
+    lengthOfHex -= 2;
     }
-    for (int i = 0; i < length; i++) {
-        if (isdigit(hexString[i])) {
-            integer += (hexString[i] - '0') * pow16(length - i - 1);
-        } else if (hexString[i] >= 'A' && hexString[i] <= 'F') {
-            integer += ((int)hexString[i] - ascii_hex_dif) * pow16(length - i - 1);                
-
+    for (int index = 0; index < lengthOfHex; index++) {
+        if (isdigit(hexString[index])) {
+            integerFromHex += (hexString[index] - '0') * pow16(lengthOfHex - index - 1);
+        } else if (hexString[index] >= 'A' && hexString[index] <= 'F') {
+            integerFromHex += ((int)hexString[index] - asciiHexDiff) * pow16(lengthOfHex - index - 1);                
         } else {
             return -1;
         }
     }
-    return integer;
+    return integerFromHex;
 }
 
 int main() {
