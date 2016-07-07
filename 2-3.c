@@ -19,8 +19,9 @@ int pow16(int exponent) {
 int htoi(char hexString[]) {
     int integer = 0;
     int length = strlen(hexString);
-    if (hexString[0] == 0 && (hexString[1] == 'x' || hexString[1] == 'X')) {
-        for (int i = 0; i < length; i++) {
+    if (hexString[0] == '0' && (hexString[1] == 'x' || hexString[1] == 'X')) {
+        hexString[1] = hexString[2];
+        for (int i = 0; i < length - 1; i++) {
             hexString[i] = hexString[i + 1];
         }
         length -= 2;
