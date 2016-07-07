@@ -17,22 +17,23 @@ int pow16(int exponent) {
 }
 
 int htoi(char hexString[]) {
+    const int ascii_hex_dif = 'A' - 10;
     int integer = 0;
     int length = strlen(hexString);
     if (hexString[0] == '0' && (hexString[1] == 'x' || hexString[1] == 'X')) {
             for (int i = 0; i < length - 1; i++) {
             hexString[i] = hexString[i + 2];
         }
-        length -= 2;
+    length -= 2;
     }
     for (int i = 0; i < length; i++) {
         if (isdigit(hexString[i])) {
             integer += (hexString[i] - '0') * pow16(length - i - 1);
         } else if (hexString[i] >= 'A' && hexString[i] <= 'F') {
-            integer += ((int)hexString[i] - 55) * pow16(length - i - 1);                
+            integer += ((int)hexString[i] - ascii_hex_dif) * pow16(length - i - 1);                
+
         } else {
-            printf("\n\nThis number is not hexadecimal !!\n\n");
-            break;
+            return -1;
         }
     }
     return integer;
@@ -42,7 +43,11 @@ int main() {
     char hexString[50];
     printf("\n\nGive me the hexadecimal number : ");
     scanf("%s", hexString);
-    printf("\nHere is your decimal number : %d ", htoi(hexString));
-    return 0;
+    if (htoi(hexString) == -1) {
+        printf("\n\nThis is not a hexadecimal number ! \n\n");
+    } else {
+        printf("\nHere is your decimal number : %d ", htoi(hexString));
+    }
+     return 0;
 }
 
