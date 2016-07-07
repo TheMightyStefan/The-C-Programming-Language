@@ -28,27 +28,12 @@ int htoi(char hexString[]) {
     for (int i = 0; i < length; i++) {
         if (isdigit(hexString[i])) {
             integer += (hexString[i] - '0') * pow16(length - i - 1);
-        } else 
-            switch (hexString[i]) {
-                case 'A' :
-                    integer += 10 * pow16(length - i - 1);
-                    break;
-                case 'B' :
-                    integer += 11 * pow16(length - i - 1);
-                    break;
-                case 'C' :
-                    integer += 12 * pow16(length - i - 1);
-                    break;
-                case 'D' :
-                    integer += 13 * pow16(length - i - 1);
-                    break;
-                case 'E' :
-                    integer += 14 * pow16(length - i - 1);
-                    break;
-                case 'F' :
-                    integer += 15 * pow16(length - i - 1);
-                    break;
-         }
+        } else if (hexString[i] >= 'A' && hexString[i] <= 'F') {
+            integer += ((int)hexString[i] - 55) * pow16(length - i - 1);                
+        } else {
+            printf("\n\nThis number is not hexadecimal !!\n\n");
+            break;
+        }
     }
     return integer;
 }
