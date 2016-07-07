@@ -45,10 +45,11 @@ int main() {
     char hexString[50];
     printf("\n\nGive me the hexadecimal number : ");
     scanf("%s", hexString);
-    if (htoi(hexString) == -1) {
+    int integerFromHex = htoi(hexString);
+    if (integerFromHex == -1) {
         printf("\n\nThis is not a hexadecimal number ! \n\n");
     } else {
-        printf("\nHere is your decimal number : %d ", htoi(hexString));
+        printf("\nHere is your decimal number : %d ", integerFromHex);
     }
      return 0;
 }
