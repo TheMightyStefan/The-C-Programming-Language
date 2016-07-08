@@ -4,19 +4,19 @@
 
 void squeeze(char str1[], char str2[])
 {
-    int i, j = 0, delete = 0;
-    for (i = 0; i < strlen(str1); i++) {
-        delete = 0;
-        for (int k = 0; k < strlen(str2); k++) {
-            if (str1[i] == str2[k]) {
-                delete = 1;
+    int index_new_str = 0, index_str2 = 0, delete_this_char = 0;
+    for (int index_str1 = 0; index_str1 < strlen(str1); index_str1++) {
+        delete_this_char = 0;
+        for (index_str2 = 0; index_str2 < strlen(str2); index_str2++) {
+            if (str1[index_str1] == str2[index_str2]) {
+                delete_this_char = 1;
             }
         }
-        if (!delete) {
-            str1[j++] = str1[i];
+        if (!delete_this_char) {
+            str1[index_new_str++] = str1[index_str1];
         }
     }
-    str1[j] = '\0';
+    str1[index_new_str] = '\0';
 }
 
 int main()
@@ -26,7 +26,9 @@ int main()
     scanf("%s", str1);
     printf("\nCharacters to delete : ");
     scanf("%s", str2);
+
     squeeze(str1, str2);
+
     printf("\nHere is your new string : %s", str1);
     printf("\n\n");
     return 0;
