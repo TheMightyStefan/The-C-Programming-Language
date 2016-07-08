@@ -24,19 +24,18 @@ int htoi(char hexString[]) {
     int lengthOfHex = strlen(hexString);
 
     if (hexString[0] == '0' && (hexString[1] == 'x' || hexString[1] == 'X')) {
-            for (int index = 0; index < lengthOfHex - 1; index++) {
-                hexString[index] = hexString[index + 2];                
-                if (index == lengthOfHex - 1) {
-                    hexString[index] = '\0';    
+        for (int index = 0; index < lengthOfHex - 1; index++) {
+            hexString[index] = hexString[index + 2];
+            if (index == lengthOfHex - 1) {
+                hexString[index] = '\0';    
                 }
             }
-    lengthOfHex -= 2;
+        lengthOfHex -= 2;
     }
    
     for (int index = 0; index < lengthOfHex; index++) {
-       
               if (isdigit(hexString[index])) {
-           integerFromHex += (hexString[index] - '0') * pow16(lengthOfHex - index - 1);
+           integerFromHex += (hexString[index] - '0') * pow16(lengthOfHex - index - 1); 
        } else if (hexString[index] >= 'A' && hexString[index] <= 'F') {
            integerFromHex += ((int)hexString[index] - asciiHexDiff) * pow16(lengthOfHex - index - 1);                
        } else {
