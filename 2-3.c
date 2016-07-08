@@ -34,13 +34,13 @@ int htoi(char hexString[]) {
     }
    
     for (int index = 0; index < lengthOfHex; index++) {
-              if (isdigit(hexString[index])) {
-           integerFromHex += (hexString[index] - '0') * pow16(lengthOfHex - index - 1); 
-       } else if (hexString[index] >= 'A' && hexString[index] <= 'F') {
-           integerFromHex += ((int)hexString[index] - asciiHexDiff) * pow16(lengthOfHex - index - 1);                
-       } else {
-           return -1;
-       }
+        if (isdigit(hexString[index])) {
+            integerFromHex += (hexString[index] - '0') * pow16(lengthOfHex - index - 1); 
+        } else if (hexString[index] >= 'A' && hexString[index] <= 'F') {
+            integerFromHex += ((int)hexString[index] - asciiHexDiff) * pow16(lengthOfHex - index - 1);                
+        } else {
+            return -1;
+        }
     }
     return integerFromHex;
 }
@@ -56,6 +56,6 @@ int main() {
     } else {
         printf("\nHere is your decimal number : %d ", integerFromHex);
     }
-     return 0;
+    return 0;
 }
 
