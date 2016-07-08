@@ -28,8 +28,8 @@ int htoi(char hexString[]) {
             hexString[index] = hexString[index + 2];
             if (index == lengthOfHex - 1) {
                 hexString[index] = '\0';    
-                }
             }
+        }
         lengthOfHex -= 2;
     }
    
