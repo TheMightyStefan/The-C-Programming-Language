@@ -4,9 +4,9 @@
 
 void squeeze(char str1[], char str2[])
 {
-    int index_new_str = 0, index_str2 = 0, delete_this_char = 0;
+    int index_new_str = 0, index_str2 = 0;
     for (int index_str1 = 0; index_str1 < strlen(str1); index_str1++) {
-        delete_this_char = 0;
+        int delete_this_char = 0;
         for (index_str2 = 0; index_str2 < strlen(str2); index_str2++) {
             if (str1[index_str1] == str2[index_str2]) {
                 delete_this_char = 1;
