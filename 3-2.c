@@ -8,20 +8,19 @@ void escape(char modified_string[], char original_string[]) {
     for (int index = 0; index <= strlen(original_string); index++) {
          switch(original_string[index]) {
             case '\n' : 
-                modified_string[new_index] = "\\";
-                modified_string[new_index + 1] = 'n';
-                new_index += 2;
+                modified_string[new_index++] = '\\';
+                modified_string[new_index] = 'n';
                 break;
             case '\t' :
-                modified_string[new_index] = "\\";
-                modified_string[new_index + 1] = 't';
-                new_index += 2; 
+                modified_string[new_index++] = '\\';
+                modified_string[new_index] = 't';
                 break;
             default :
                 modified_string[new_index] = original_string[index];
-                new_index++;
-        }   
+        } 
+    new_index++;  
     }
+    modified_string[new_index] = '\0';
 }
 
 int main () {
