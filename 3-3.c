@@ -3,24 +3,29 @@
 #include <string.h>
 #include <ctype.h>
 
-void expand(char shorthand_notation[], char complete_notation[]) {
+void expand(char shorthand[], char complete[]) {
 
     int complete_index = 0;
-    for (int index = 0; index < strlen(shorthand_notation); index++) {
-        if (isalpha(shorthand_notation[index]) && shorthand_notation[index + 1] == '-' && isalpha(shorthand_notation[index + 2])) {
-            while((int)shorthand_notation[index] < (int)shorthand_notation[index + 2]) {
-                complete_notation[complete_index] = shorthand_notation[index];
-                (int)shorthand_notation[index]++;
+    for (int index = 0; index < strlen(shorthand); index++) {
+        if (isalpha(shorthand[index]) && shorthand[index + 1] == '-' && isalpha(shorthand[index + 2])) {
+            int FIRST_ASCII = (int)shorthand[index],
+                LAST_ASCII = (int)shorthand[index + 2];
+            while(FIRST_ASCII < LAST_ASCII) {
+                complete[complete_index] = (char)FIRST_ASCII;
+                FIRST_ASCII++;
                 complete_index++;
             }
-        } else if (isdigit(shorthand_notation[index]) && isdigit(shorthand_notation[index + 2]) && shorthand_notation[index + 1] == '-') {
-            while((int)shorthand_notation[index] < (int)shorthand_notation[index + 2]) {
-                complete_notation[complete_index] = shorthand_notation[index];
-                (int)shorthand_notation[index]++;
+        } else if (isdigit(shorthand[index]) && isdigit(shorthand[index + 2]) && shorthand[index + 1] == '-') {
+            int FIRST_ASCII = (int)shorthand[index],
+                LAST_ASCII = (int)shorthand[index + 2];
+            while(FIRST_ASCII < LAST_ASCII) {
+                complete[complete_index] = (char)FIRST_ASCII;
+                FIRST_ASCII++;
                 complete_index++;
             }
-        } else if (shorthand_notation[index] != '-') {
-            complete_notation[complete_index] = shorthand_notation[index];
+
+        } else if (shorthand[index] != '-') {
+            complete[complete_index] = shorthand[index];
             complete_index++;
         }
     } 
@@ -28,12 +33,12 @@ void expand(char shorthand_notation[], char complete_notation[]) {
 
 int main () {
     
-    char shorthand_notation[100], complete_notation[250];
+    char shorthand[100], complete[250];
     printf("\nGive me the shorthand notation : ");
-    scanf("%s", shorthand_notation);    
+    scanf("%s", shorthand);    
 
-    expand(shorthand_notation, complete_notation);
+    expand(shorthand, complete);
  
-    printf("\nHere is what you need : \n%s", complete_notation);
+    printf("\nHere is what you need : \n%s", complete);
     return 0;
 }
