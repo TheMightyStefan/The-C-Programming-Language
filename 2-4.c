@@ -5,7 +5,7 @@
 int search(char str1[], char character_to_search_for) {
 
     int found = 0;
-    for (int index_str1 = 0; index_str1 < strlen(str1); index_str1++) {
+    for (int index_str1 = 0; (!found) && index_str1 < strlen(str1); index_str1++) {
             if (str1[index_str1] == character_to_search_for) 
                 found = 1;
         }
