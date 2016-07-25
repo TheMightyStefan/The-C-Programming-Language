@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-int any(char s1[], char s2[]) 
+int any(char str1[], char str2[]) 
 {   
     int stop = 0, first_location = 0;
-    for (int i = 0; i < strlen(s1) && (!stop); i++) {
-        for (int j = 0; j < strlen(s2); j++) {
-            if (s1[i] == s2[j]) {
+    for (int index_str1 = 0; index_str1 < strlen(str1) && (!stop); index_str1++) {
+        for (int index_str2 = 0; index_str2 < strlen(str2); index_str2++) {
+            if (str1[index_str1] == str2[index_str2]) {
                 stop = 1;
-                first_location = i + 1;
+                first_location = index_str1 + 1;
             }
         }
     }
@@ -22,12 +22,12 @@ int any(char s1[], char s2[])
 
 int main() 
 {
-    char s1[50], s2[50];
+    char str1[50], str2[50];
     printf("\n\nGive me the first string : ");
-    scanf("%s", s1);
+    scanf("%s", str1);
     printf("\nGive me the second string : ");
-    scanf("%s", s2);
-    printf("Here is the first location in the first string where any character from the string 2 occurs : %d\n\n", any(s1, s2));
+    scanf("%s", str2);
+    printf("Here is the first location in the first string where any character from the string 2 occurs : %d\n\n", any(str1, str2));
     return 0;
 }
 
