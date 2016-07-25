@@ -11,7 +11,7 @@ int search(char str[], char target) {
     return 0;   
 }
 
-//Delete all occurences of target in str         
+// Delete all occurences of target in str         
 
 void delete(char str[], char target) {
     
