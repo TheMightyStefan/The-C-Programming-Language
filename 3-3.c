@@ -15,7 +15,7 @@ void expand(char shorthand[], char complete[]) {
                 complete_index++;
                 FIRST_ASCII++;
             }
-        } else if (isdigit(shorthand[index]) && isdigit(shorthand[index + 2]) && shorthand[index + 1] == '-') {
+        } else if (isdigit(shorthand[index]) && shorthand[index + 1] == '-' && isdigit(shorthand[index + 2])) {
             int FIRST_ASCII = (int)shorthand[index],
                 LAST_ASCII = (int)shorthand[index + 2];
             while(FIRST_ASCII <= LAST_ASCII) {
