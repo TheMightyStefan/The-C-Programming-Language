@@ -7,15 +7,8 @@ void expand(char shorthand[], char complete[]) {
 
     int complete_index = 0;
     for (int index = 0; index < strlen(shorthand) - 2; index++) {
-        if (isalpha(shorthand[index]) && shorthand[index + 1] == '-' && isalpha(shorthand[index + 2])) {
-            int FIRST_ASCII = (int)shorthand[index],
-                LAST_ASCII = (int)shorthand[index + 2];
-            while(FIRST_ASCII <= LAST_ASCII) {
-                complete[complete_index] = (char)FIRST_ASCII;
-                complete_index++;
-                FIRST_ASCII++;
-            }
-        } else if (isdigit(shorthand[index]) && shorthand[index + 1] == '-' && isdigit(shorthand[index + 2])) {
+        if ((isalpha(shorthand[index]) && shorthand[index + 1] == '-' && isalpha(shorthand[index + 2])) ||
+            (isdigit(shorthand[index]) && shorthand[index + 1] == '-' && isdigit(shorthand[index + 2]))) {
             int FIRST_ASCII = (int)shorthand[index],
                 LAST_ASCII = (int)shorthand[index + 2];
             while(FIRST_ASCII <= LAST_ASCII) {
