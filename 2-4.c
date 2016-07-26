@@ -5,9 +5,10 @@
 int search(char str[], char target) {
 
     for (int index = 0; index < strlen(str); index++) {
-        if (str[index] == target) 
+        if (str[index] == target) {
             return 1;
         }
+    }
     return 0;   
 }
 
