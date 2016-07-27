@@ -1,37 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void showbits(int number) {
-    
-    int binary[100], index = 0;
-    while (number) {
-        if (number & 0x1) 
-            binary[index] = 1;
-        else
-            binary[index] = 0;
-        number >>= 1;
-        index++;
-    }
-    printf("\n");
-    for ( ; index >= 0; index--) {
-        printf("%d", binary[index]);
-    }
-    printf("\n");
-}
-
 int getbits(int y, int n) {
 
     return (y & (~0u >> ((sizeof(y) * 8 ) - n)));
 }
 
+int setbits(int x, int p, int n, int y) {
+
+    int z = x;
+    x >>= ((sizeof(x) * 8) - p - n + 1);
+    x = (x & ~n) | getbits(y, n);
+    x <<= ((sizeof(x) * 8) - p - n + 1);
+    x = (x & (~(sizeof(x) * 8) - p - n + 1)) | getbits(z, sizeof(x) * 8 - p - n + 1);
+    return x;
+}
+
 int main() {
     
-    int y = 453; 
-    showbits(64);
-    showbits(86);
-    showbits(43);
-    showbits(432);
-    showbits(getbits(y,3));
+    int x = 41;
+    int y = 29;
+    printf("\n%x\n%x\n", x, y);
+    printf("%x\n", setbits(x, 3, 3, y));
     return 0;
 }
     
