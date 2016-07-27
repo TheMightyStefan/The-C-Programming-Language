@@ -3,12 +3,18 @@
 
 void showbits(int number) {
     
+    int binary[100], index = 0;
     while (number) {
-        if (number & 1) 
-            printf("1");
+        if (number & 0x1) 
+            binary[index] = 1;
         else
-            printf("0");
+            binary[index] = 0;
         number >>= 1;
+        index++;
+    }
+    printf("\n");
+    for ( ; index >= 0; index--) {
+        printf("%d", binary[index]);
     }
     printf("\n");
 }
@@ -20,8 +26,11 @@ int getbits(int y, int n) {
 
 int main() {
     
-    int y = 144;
-    showbits(y);
+    int y = 453; 
+    showbits(64);
+    showbits(86);
+    showbits(43);
+    showbits(432);
     showbits(getbits(y,3));
     return 0;
 }
