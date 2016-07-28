@@ -7,21 +7,25 @@ int getbits(int y, int n) {
 }
 
 int setbits(int x, int p, int n, int y) {
-
+    
+    printf("\nSizeof x : %d\n", sizeof(x));
     int z = x;
-    x >>= ((sizeof(x) * 8) - p - n + 1);
+    x = x >> ((sizeof(x) * 2) - p - n - 1);
+    printf("\nx >> %ld = %x\n", (sizeof(x) * 2) - p - n - 1, x);
     x = (x & ~n) | getbits(y, n);
-    x <<= ((sizeof(x) * 8) - p - n + 1);
-    x = (x & (~(sizeof(x) * 8) - p - n + 1)) | getbits(z, sizeof(x) * 8 - p - n + 1);
+    printf("\nx + noii biti : %x\n", x);
+    x <<= ((sizeof(x) * 2) - p - n - 1);
+    printf("\nx << %ld = %x\n", (sizeof(x) * 2) - p - n - 1, x);
+    x = (x & (~(sizeof(x) * 2) - p - n - 1)) | getbits(z, sizeof(x) * 2 - p - n - 1);
     return x;
 }
 
 int main() {
     
-    int x = 41;
-    int y = 29;
-    printf("\n%x\n%x\n", x, y);
-    printf("%x\n", setbits(x, 3, 3, y));
+    int x = 150;
+    int y = 85;
+    printf("\nx = %x\ny = %x\n", x, y);
+    printf("\nx final = %x\n", setbits(x, 3, 3, y));
     return 0;
 }
     
