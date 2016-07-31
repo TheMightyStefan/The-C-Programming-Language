@@ -28,7 +28,7 @@ int invert(int x, int p, int n) {
     // We change the last p bits of x
     // with the last p bits from the copy 
     // of the original x.
-    x = x | ((z >> p) & (~(~0 << p)));
+    x = x | (z & (~(~0 << p)));
 
     // We return the needed x.
     return x;  
@@ -36,9 +36,9 @@ int invert(int x, int p, int n) {
 
 int main() {
 
-    int x = 255;
-    int p = 2;
-    int n = 2;
+    int x = 170;
+    int p = 3;
+    int n = 4;
     printf("\nx = %x\n", x);
     printf("\nInverted version : %x\n", invert(x, p, n));
     return 0;
