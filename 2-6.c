@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int getbits(int y, int n) {
+int get_last_bits(int y, int n) {
 
     // We get the last n bits of y
     return y & (~(~0 << n));
@@ -18,7 +18,7 @@ int setbits(int x, int p, int n, int y) {
 
     // We change the last n bits of x after the shift 
     // with the last n bits of y.
-    x = ((x >> n) << n) | getbits(y, n);
+    x = ((x >> n) << n) | get_last_bits(y, n);
     
     // We shift x back to get the most significant bit on the 
     // initial position.
@@ -26,7 +26,7 @@ int setbits(int x, int p, int n, int y) {
     
     // We change the last bits of x obtained after the shift
     // with the last bits of the initial x.
-    x = ((x >> p) << p) | getbits(z, p);
+    x = ((x >> p) << p) | get_last_bits(z, p);
     
     // We return the needed x.
     return x;
