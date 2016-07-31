@@ -3,7 +3,6 @@
 
 int get_last_bits(int y, int n) {
 
-    // We get the last n bits of y
     return y & (~(~0 << n));
 }
 
