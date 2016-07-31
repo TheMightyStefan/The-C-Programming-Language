@@ -7,25 +7,14 @@ int rightrot(int x, int n) {
     // We store the last n bits of x in last_bits.
     int last_bits = x & ~(~0 << n);
     
-    // We delete the last n bits of x.
-    x = x >> n;
-    
-    // We initialize bits_number, which will store the 
-    // number of the bits of x after the delete.
-    int bits_number = 0;
-
-    // We get the number of bits and x becomes 0.
-    while (x) {
-        x = x >> 1;
-        bits_number++;
-    }
+    x = 0;
 
     // We add the rotated bits in the right of x.
     x = x | last_bits;
     
     // We left shift it to get the rotated bits 
     // to be the most significant ones.
-    x = x << bits_number;
+    x = x << (sizeof(x) * 8 - n);
 
     // We add the left bits from the initial x to
     // the modified x.
@@ -37,7 +26,7 @@ int rightrot(int x, int n) {
 
 int main() {
 
-    int x = 170;
+    int x = 0xF;
     int n = 3;
 
     printf("\n%x --> %x\n", x, rightrot(x, n));
