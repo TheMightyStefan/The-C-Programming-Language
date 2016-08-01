@@ -12,44 +12,42 @@
 // The assignment n = -n causes the issue because n can't
 // handle -(-2^(n-1)) = 2^(n-1).
 
-void reverse(char s[]) {
+void reverse(char string[]) {
 
-    int i, j, c;
-
-    for (i = 0, j = strlen(s) - 1; i < j; i++, j--) {
-        c = s[i];
-        s[i] = s[j];
-        s[j] = c;
+    for (int index_1 = 0, index_2 = strlen(string) - 1; index_1 < index_2; index_1++, index_2--) {
+        int character = string[index_1];
+        string[index_1] = string[index_2];
+        string[index_2] = character;
     }
 }
 
-void itoa(int n, char s[]) {
+void itoa(int number, char digit_string[]) {
 
-    int i = 0;
-    int sign = n;
+    int index = 0;
+    int initial_number = number;
 
     do {
-        s[i++] = abs(n % 10) + '0';
-    } while ( n /= 10 );
+        digit_string[index++] = abs(number % 10) + '0';
+    } while ( number /= 10 );
 
-    if (sign < 0)
-        s[i++] = '-';
+    if (initial_number < 0)
+        digit_string[index++] = '-';
 
-    s[i] = '\0';
+    digit_string[index] = '\0';
 
-    reverse(s);
+    reverse(digit_string);
 }
 
 
 int main(void) {
 
-    char string[20];
+    char digit_string[20];
     
     printf("INT_MIN: %d\n", INT_MIN);
     
-    itoa(INT_MIN, string);
+    itoa(INT_MIN, digit_string);
     
-    printf("Buffer : %s\n", string);
+    printf("Buffer : %s\n", digit_string);
     
     return 0;
 }
