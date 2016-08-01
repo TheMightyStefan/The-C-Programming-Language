@@ -3,15 +3,6 @@
 #include <stdio.h>
 #include <limits.h>
 
-// The initial program could not print the 
-// largest negative value because the limits
-// of types in two's complement systems are
-// -2^(n-1) and 2^(n-1) - 1, where n is the number
-// of bits of the type.
-
-// The assignment n = -n causes the issue because n can't
-// handle -(-2^(n-1)) = 2^(n-1).
-
 void reverse(char string[]) {
 
     for (int index_1 = 0, index_2 = strlen(string) - 1; index_1 < index_2; index_1++, index_2--) {
