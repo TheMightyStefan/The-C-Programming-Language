@@ -27,10 +27,7 @@ int main() {
     char string[100];
     char target[100];
 
-    printf("\n\nI need your string : ");
     scanf("%s", string);
-
-    printf("\n\nTarget : ");
     scanf("%s", target);
 
     if (strrindex(string, target) != -1)
