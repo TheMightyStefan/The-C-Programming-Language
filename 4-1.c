@@ -4,14 +4,15 @@
 int strrindex(char string[], char target[]) {
 
     for (int index = strlen(string) - 1; index >= strlen(target); index--) { 
-        int string_index = index;
-        int target_index = strlen(target) - 1;
+        signed int string_index = index;
+        signed int target_index = strlen(target) - 1;
         int search_length = 0;
 
         while (string[string_index] == target[target_index]) {
+            search_length++;
             string_index--;
             target_index--;
-            search_length++;
+
         }
 
         if (search_length == strlen(target))
@@ -23,10 +24,16 @@ int strrindex(char string[], char target[]) {
 
 int main() {
 
-    char string[] = "agandftargetsdjfsndjfajftargeti";
-    char target[] = "target";
+    char string[100];
+    char target[100];
 
-    if (strrindex(string, target) >= 0)
+    printf("\n\nI need your string : ");
+    scanf("%s", string);
+
+    printf("\n\nTarget : ");
+    scanf("%s", target);
+
+    if (strrindex(string, target) != -1)
          printf("\n%d\n", strrindex(string, target));
     else
         printf("\nNot found\n");
