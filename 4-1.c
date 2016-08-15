@@ -3,19 +3,17 @@
 
 int strrindex(char string[], char target[]) {
 
-    for (int index = strlen(string) - 1; index >= strlen(target); index--) { 
+    for (int index = strlen(string) - 1; index >= 0; index--) { 
         signed int string_index = index;
         signed int target_index = strlen(target) - 1;
         int search_length = 0;
-
-        while (string[string_index] == target[target_index]) {
+        while (string[string_index] == target[target_index] && string_index >= 0) {
             search_length++;
             string_index--;
             target_index--;
-
-        }
-
-        if (search_length == strlen(target))
+	}
+	
+	if (search_length == strlen(target))
             return string_index + 2;
     }
     
