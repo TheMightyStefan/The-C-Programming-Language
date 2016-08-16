@@ -4,7 +4,7 @@
 
 double power_up(int base, int power) {
 
-	double result = 1;
+        double result = 1;
 	
 	if (power == 0) 
 		return 1;
@@ -44,7 +44,7 @@ double string_to_double(char string[]) {
 		index++;
 
         int e_index;
-        int e_found;
+        int e_found = 0;
 
 	for (int after_dot_index = index; after_dot_index < strlen(string); after_dot_index++) {
 		if (string[after_dot_index] == 'e' || string[after_dot_index] == 'E') {
@@ -53,21 +53,21 @@ double string_to_double(char string[]) {
 		}	
 	}
 
-    	double e_power;
+    	double e_power = 0;
 
 	if (e_found) {
 		for (int after_e_index = e_index + 2; after_e_index < strlen(string); after_e_index++)
 			e_power = e_power * 10 + (string[after_e_index] - '0');
-	}
 	
-	e_power = (string[e_index + 1] == '-') ? -e_power : e_power;
+		e_power *= (string[e_index + 1] == '-') ? -1 : 1;
+	}
 
         double power;
 	
 	for (power = 1.0; isdigit(string[index]); index++) {
-		value = 10.0 * value + (string[index] - '0');
-		power *= 10.0;
-	}
+                value = 10.0 * value + (string[index] - '0');
+                power *= 10.0;
+        }
 	
         return sign * value / power * power_up(10, e_power);
 }
