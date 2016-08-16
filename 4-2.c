@@ -1,26 +1,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-
-double power_up(int base, int power) {
-
-    double result = 1;
-	
-	if (power == 0) 
-        return 1;
-
-	while (power < 0) { 
-        result /= base;
-		power++;
-	}	
-
-	while (power > 0) { 
-		result *= base;
-		power--;
-	}	
-
-	return result;
-}
+#include <math.h>
 
 double string_to_double(char string[]) {
 	
@@ -59,7 +40,7 @@ double string_to_double(char string[]) {
         e_power *= (string[index + 1] == '-') ? -1 : 1;                       
     }    
 
-    return sign * value / power * power_up(10, e_power);
+    return sign * value / power * pow(10, e_power);
 }
 
 int main() {
