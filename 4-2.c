@@ -25,7 +25,7 @@ double string_to_double(char string[]) {
         index++;
 
     double fractional_part = 1;
-	
+
     for (fractional_part = 1.0; isdigit(string[index]); index++) {
         value = 10 * value + (string[index] - '0');
         fractional_part *= 10;
@@ -53,6 +53,3 @@ int main() {
 
     return 0;
 }
-
-
-		
