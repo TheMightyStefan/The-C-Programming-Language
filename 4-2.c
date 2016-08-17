@@ -24,11 +24,11 @@ double string_to_double(char string[]) {
 	if (string[index] == '.')
 		index++;
 
-	double power = 1;
+	double fractional_part = 1;
 	
-	for (power = 1.0; isdigit(string[index]); index++) {
+	for (fractional_part = 1.0; isdigit(string[index]); index++) {
 		value = 10.0 * value + (string[index] - '0');
-		power *= 10.0;
+		fractional_part *= 10.0;
 	}
 
 	double e_power = 0;
@@ -40,7 +40,7 @@ double string_to_double(char string[]) {
 		e_power *= (string[index + 1] == '-') ? -1 : 1;                       
 	}    
 
-	return sign * value / power * pow(10, e_power);
+	return sign * value / fractional_part * pow(10, e_power);
 }
 
 int main() {
