@@ -84,12 +84,20 @@ int main() {
                 push(pop() * pop());
                 break;
             case '-':
+                op2 = pop();
                 push(pop() - op2);
                 break;
             case '/':
                 op2 = pop();
                 if (op2 != 0)
                     push(pop() / op2);
+                else
+                    printf("Error : 0 divisor\n");
+                break;
+            case '%':
+                op2 = pop();
+                if (op2 != 0)
+                    push((int)pop() % (int)op2);
                 else
                     printf("Error : 0 divisor\n");
                 break;
