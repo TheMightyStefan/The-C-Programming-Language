@@ -20,8 +20,7 @@ void push(double f) {
         printf("Error : Stack full\n");
 }
     
-double pop() {
-  
+double pop() { 
     if (sp > 0) 
         return val[--sp];
     else {
@@ -42,29 +41,45 @@ void ungetch(int c) {
 }
 
 int getop(char s[]) {
-    int i,c;
+    int i= 0;
+    int c;
 
     while ((s[0] = c = getch()) == ' ' || c == '\t');
 
     s[1] = '\0';
 
-    if(!isdigit(c) && c != '.')
+    if (!isdigit(c) && c != '.' && c != '-')
         return c;
 
-    i = 0;
+    if (c == '-') {
+	    if (isdigit(s[++i] = c = getch())) {
+		   while (isdigit(s[++i] = c = getch()));
 
-    if (isdigit(c))
-        while (isdigit(s[++i] = c = getch()));
+		   if (c == '.')
+			   while (isdigit(s[++i] = c = getch()));
+		   
+		   s[i] = '\0';
+		   
+		   if (c != EOF)
+			   ungetch(-c);
+		
+		   return NUMBER;
+	    } else 
+		   return '-';
+    } else {
+    	if (isdigit(c))
+        	while (isdigit(s[++i] = c = getch()));
 
-    if (c == '.')
-        while (isdigit(s[++i] = c = getch()));
+    	if (c == '.')
+        	while (isdigit(s[++i] = c = getch()));
     
-    s[i] = '\0';
+    	s[i] = '\0';
 
-    if (c != EOF)
-        ungetch(c);
+    	if (c != EOF)
+        	ungetch(c);
     
-    return NUMBER;
+    	return NUMBER;
+    }
 }
 
 int main() {
