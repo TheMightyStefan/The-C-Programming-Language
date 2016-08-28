@@ -2,82 +2,81 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define MAXOP 100
+#define MAX_OPERATORS 100
 #define NUMBER '0'
-#define MAXVAL 100
-#define BUFSIZE 100
+#define MAX_STACK_SIZE 100
+#define BUFFER_SIZE 100
 
-int sp = 0;
-double val[MAXVAL];
-char buf[BUFSIZE];
-int bufp = 0;
+int stack_index = 0;
+double stack[MAX_STACK_SIZE];
+char buffer[BUFFER_SIZE];
+int buffer_index = 0;
 
-
-void push(double f) {
-    if (sp < MAXVAL)
-        val[sp++] = f;
+void push(double new_stack_number) {
+    if (stack_index < MAX_STACK_SIZE)
+        stack[stack_index++] = new_stack_number;
     else
         printf("Error : Stack full\n");
 }
     
 double pop() { 
-    if (sp > 0) 
-        return val[--sp];
+    if (stack_index > 0) 
+        return stack[--stack_index];
     else {
         printf("Error : Stack empty\n");
         return 0;
     }
 }
 
-int getch() {
-    return (bufp > 0) ? buf[--bufp] : getchar();
+int get_character() {
+    return (buffer_index > 0) ? buffer[--buffer_index] : getchar();
 }
 
-void ungetch(int c) {
-    if (bufp >= BUFSIZE)
+void unget_character(int character) {
+    if (buffer_index >= BUFFER_SIZE)
         printf("Ungetch : Too many characters\n");
     else
-        buf[bufp++] = c;
+        buffer[buffer_index++] = character;
 }
 
-int getop(char s[]) {
-    int i = 0;
-    int c;
+int get_operators(char input_string[]) {
+    int string_index = 0;
+    int character;
 
-    while ((s[0] = c = getch()) == ' ' || c == '\t');
+    while ((input_string[0] = character = get_character()) == ' ' || character == '\t');
 
-    s[1] = '\0';
+    input_string[1] = '\0';
 
-    if (!isdigit(c) && c != '.' && c != '-')
-        return c;
+    if (!isdigit(character) && character != '.' && character != '-')
+        return character;
 
-    if (c != '-') {
-    	if (isdigit(c))
-        	while (isdigit(s[++i] = c = getch()));
+    if (character != '-') {
+    	if (isdigit(character))
+        	while (isdigit(input_string[++string_index] = character = get_character()));
 
-    	if (c == '.')
-        	while (isdigit(s[++i] = c = getch()));
+    	if (character == '.')
+        	while (isdigit(input_string[++string_index] = character = get_character()));
     
-    	s[i] = '\0';
+    	input_string[string_index] = '\0';
 
-    	if (c != EOF)
-        	ungetch(c);
+    	if (character != EOF)
+        	unget_character(character);
     
     	return NUMBER;
    
    } else {
-	   if (isdigit(s[++i] = c = getch())) {
-		s[0] = '-';
+	   if (isdigit(input_string[++string_index] = character = get_character())) {
+		input_string[0] = '-';
 
-		while (isdigit(s[++i] = c = getch()));
+		while (isdigit(input_string[++string_index] = character = get_character()));
 
-		if (c == '.')
-			while (isdigit(s[++i] = c = getch()));
+		if (character == '.')
+			while (isdigit(input_string[++string_index] = character = get_character()));
 
-		s[i] = '\0';
+		input_string[string_index] = '\0';
 
-		if (c != EOF) {
-			ungetch(c);
+		if (character != EOF) {
+			unget_character(character);
 		}
 		return NUMBER;
 	   } else {
@@ -89,13 +88,13 @@ int getop(char s[]) {
 
 int main() {
     int type;
-    double op2;
-    char s[MAXOP];
+    double next_pop;
+    char input_string[MAX_OPERATORS];
 
-    while ((type = getop(s)) != EOF) {
+    while ((type = get_operators(input_string)) != EOF) {
         switch(type) {
             case NUMBER:
-                push(atof(s));
+                push(atof(input_string));
                 break;
             case '+':
                 push(pop() + pop());
@@ -104,20 +103,20 @@ int main() {
                 push(pop() * pop());
                 break;
             case '-':
-                op2 = pop();
-		push(pop() - op2);
+                next_pop = pop();
+		push(pop() - next_pop);
        		break;
             case '/':
-                op2 = pop();
-                if (op2 != 0)
-                    push(pop() / op2);
+                next_pop = pop();
+                if (next_pop != 0)
+                    push(pop() / next_pop);
                 else
                     printf("Error : 0 divisor\n");
                 break;
             case '%':
-                op2 = pop();
-                if (op2 != 0)
-                    push((int)pop() % (int)op2);
+                next_pop = pop();
+                if (next_pop != 0)
+                    push((int)pop() % (int)next_pop);
                 else
                     printf("Error : 0 divisor\n");
                 break;
@@ -125,7 +124,7 @@ int main() {
 		printf("\t%g\n", pop());
                 break;
             default:
-                printf("Error : Unknown command %s\n", s);
+                printf("Error : Unknown command %s\n", input_string);
                 break;
         }
     }
