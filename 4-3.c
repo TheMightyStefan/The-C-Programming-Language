@@ -41,7 +41,7 @@ void ungetch(int c) {
 }
 
 int getop(char s[]) {
-    int i= 0;
+    int i = 0;
     int c;
 
     while ((s[0] = c = getch()) == ' ' || c == '\t');
@@ -51,22 +51,7 @@ int getop(char s[]) {
     if (!isdigit(c) && c != '.' && c != '-')
         return c;
 
-    if (c == '-') {
-	    if (isdigit(s[++i] = c = getch())) {
-		   while (isdigit(s[++i] = c = getch()));
-
-		   if (c == '.')
-			   while (isdigit(s[++i] = c = getch()));
-		   
-		   s[i] = '\0';
-		   
-		   if (c != EOF)
-			   ungetch(-c);
-		
-		   return NUMBER;
-	    } else 
-		   return '-';
-    } else {
+    if (c != '-') {
     	if (isdigit(c))
         	while (isdigit(s[++i] = c = getch()));
 
@@ -79,8 +64,28 @@ int getop(char s[]) {
         	ungetch(c);
     
     	return NUMBER;
-    }
+   
+   } else {
+	   if (isdigit(s[++i] = c = getch())) {
+		s[0] = '-';
+
+		while (isdigit(s[++i] = c = getch()));
+
+		if (c == '.')
+			while (isdigit(s[++i] = c = getch()));
+
+		s[i] = '\0';
+
+		if (c != EOF) {
+			ungetch(c);
+		}
+		return NUMBER;
+	   } else {
+		return '-';
+	   }
+	}
 }
+ 
 
 int main() {
     int type;
@@ -100,8 +105,8 @@ int main() {
                 break;
             case '-':
                 op2 = pop();
-                push(pop() - op2);
-                break;
+		push(pop() - op2);
+       		break;
             case '/':
                 op2 = pop();
                 if (op2 != 0)
@@ -117,7 +122,7 @@ int main() {
                     printf("Error : 0 divisor\n");
                 break;
             case '\n':
-                printf("\t%.8g\n", pop());
+		printf("\t%g\n", pop());
                 break;
             default:
                 printf("Error : Unknown command %s\n", s);
