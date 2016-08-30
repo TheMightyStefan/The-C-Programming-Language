@@ -57,7 +57,6 @@ int get_operators(char input_string[]) {
     if (!isdigit(character) && character != '.' && character != '-')
         return character;
 
-    //In case of positive numbers
     if (character != '-') {
         //Get the integer part
         if (isdigit(character))
@@ -73,12 +72,9 @@ int get_operators(char input_string[]) {
     
     	return NUMBER;
    
-   //In case of negative numbers / subtraction
    } else {
-	   int temp_character;
-	   if (isdigit(temp_character = get_character())) {
+	   if (stack_index < 2) {
 		//Negative number
-                input_string[++string_index] = temp_character;
 		input_string[0] = '-';
         
                 //Get integer part
@@ -96,7 +92,6 @@ int get_operators(char input_string[]) {
 		return NUMBER;
 	   } else {
                 //Subtraction
-		unget_character(temp_character);
 		return '-';
 	   }
 	}
