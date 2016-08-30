@@ -51,7 +51,7 @@ int get_operators(char input_string[]) {
         return character;
 
     if (character != '-') {
-    	if (isdigit(character))
+        if (isdigit(character))
         	while (isdigit(input_string[++string_index] = character = get_character()));
 
     	if (character == '.')
