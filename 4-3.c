@@ -42,10 +42,22 @@ void unget_character(int character) {
     else
         buffer[buffer_index++] = character;
 }
-
+void get_digits(char string[]) {
+    int string_index = 0;
+    int character;
+    while (isdigit(string[++string_index] = character = get_character()));
+    
+    if (character == '.')
+        while (isdigit(string[++string_index] = character = get_character()));
+    
+    string[string_index] = '\0';
+    
+    if (character != EOF) 
+        unget_character(character);
+}
+    
 //Function to get the type of input : Number / Operators
 int get_operators(char input_string[]) {
-    int string_index = 0;
     int character;
 
     //Ignore the spaces beetween characters
@@ -58,44 +70,19 @@ int get_operators(char input_string[]) {
         return character;
 
     if (character != '-') {
-        //Get the integer part
-        if (isdigit(character))
-            while (isdigit(input_string[++string_index] = character = get_character()));
-        //Get the fractional part
-        if (character == '.')
-            while (isdigit(input_string[++string_index] = character = get_character()));
-
-        input_string[string_index] = '\0';
-
-        if (character != EOF)
-            unget_character(character);
-
+        get_digits(input_string);
         return NUMBER;
 
     } else {
-            if (stack_index < 2) {
-            //Negative number
+        if (stack_index < 2) {
             input_string[0] = '-';
-
-            //Get integer part
-            while (isdigit(input_string[++string_index] = character = get_character()));
-
-            //Get fractional part
-            if (character == '.')
-                while (isdigit(input_string[++string_index] = character = get_character()));
-
-            input_string[string_index] = '\0';
-
-            if (character != EOF) {
-                unget_character(character);
-            }
-
+            get_digits(input_string);
+            
             return NUMBER;
-            } else {
-            //Subtraction
+        } else {
             return '-';
             }
-        }
+    }
 }
 
 int main() {
