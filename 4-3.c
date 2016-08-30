@@ -65,7 +65,9 @@ int get_operators(char input_string[]) {
     	return NUMBER;
    
    } else {
-	   if (isdigit(input_string[++string_index] = character = get_character())) {
+	   int temp_character;
+	   if (isdigit(temp_character = get_character())) {
+		input_string[++string_index] = temp_character;
 		input_string[0] = '-';
 
 		while (isdigit(input_string[++string_index] = character = get_character()));
@@ -80,6 +82,7 @@ int get_operators(char input_string[]) {
 		}
 		return NUMBER;
 	   } else {
+		unget_character(temp_character);
 		return '-';
 	   }
 	}
