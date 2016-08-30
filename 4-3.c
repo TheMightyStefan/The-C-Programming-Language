@@ -21,7 +21,7 @@ void push(double new_stack_number) {
 }
 
 //Function for poping from stack
-double pop() { 
+double pop() {
     if (stack_index > 0) 
         return stack[--stack_index];
     else {
@@ -60,43 +60,43 @@ int get_operators(char input_string[]) {
     if (character != '-') {
         //Get the integer part
         if (isdigit(character))
-        	while (isdigit(input_string[++string_index] = character = get_character()));
+            while (isdigit(input_string[++string_index] = character = get_character()));
         //Get the fractional part
-    	if (character == '.')
-        	while (isdigit(input_string[++string_index] = character = get_character()));
-    
-    	input_string[string_index] = '\0';
+        if (character == '.')
+            while (isdigit(input_string[++string_index] = character = get_character()));
 
-    	if (character != EOF)
-        	unget_character(character);
-    
-    	return NUMBER;
-   
-   } else {
-	   if (stack_index < 2) {
-		//Negative number
-		input_string[0] = '-';
-        
-                //Get integer part
-		while (isdigit(input_string[++string_index] = character = get_character()));
+        input_string[string_index] = '\0';
 
-                //Get fractional part
-		if (character == '.')
-			while (isdigit(input_string[++string_index] = character = get_character()));
+        if (character != EOF)
+            unget_character(character);
 
-		input_string[string_index] = '\0';
+        return NUMBER;
 
-		if (character != EOF) {
-			unget_character(character);
-		}
-		return NUMBER;
-	   } else {
-                //Subtraction
-		return '-';
-	   }
-	}
+    } else {
+            if (stack_index < 2) {
+            //Negative number
+            input_string[0] = '-';
+
+            //Get integer part
+            while (isdigit(input_string[++string_index] = character = get_character()));
+
+            //Get fractional part
+            if (character == '.')
+                while (isdigit(input_string[++string_index] = character = get_character()));
+
+            input_string[string_index] = '\0';
+
+            if (character != EOF) {
+                unget_character(character);
+            }
+
+            return NUMBER;
+            } else {
+            //Subtraction
+            return '-';
+            }
+        }
 }
- 
 
 int main() {
     int type;
@@ -104,46 +104,45 @@ int main() {
     char input_string[MAX_OPERATORS];
 
     while ((type = get_operators(input_string)) != EOF) {
-           switch(type) {
+            switch(type) {
             //Push the number into the stack
-            case NUMBER:
-                push(atof(input_string));
-                break;
+                case NUMBER:
+                    push(atof(input_string));
+                    break;
             //Do the requested operations
-            case '+':
-                push(pop() + pop());
-                break;
-            case '*':
-                push(pop() * pop());
-                break;
-            case '-':
-                next_pop = pop();
-		push(pop() - next_pop);
-       		break;
-            case '/':
-                next_pop = pop();
-                if (next_pop != 0)
-                    push(pop() / next_pop);
-                else
-                    printf("Error : 0 divisor\n");
-                break;
-            case '%':
-                next_pop = pop();
-                if (next_pop != 0)
-                    push((int)pop() % (int)next_pop);
-                else
-                    printf("Error : 0 divisor\n");
-                break;
-            case '\n':
-                //Print output
-		printf("\t%g\n", pop());
-                break;
-            default:
-                printf("Error : Unknown command %s\n", input_string);
-                break;
+                case '+':
+                    push(pop() + pop());
+                    break;
+                case '*':
+                    push(pop() * pop());
+                    break;
+                case '-':
+                    next_pop = pop();
+                    push(pop() - next_pop);
+                    break;
+                case '/':
+                    next_pop = pop();
+                    if (next_pop != 0)
+                        push(pop() / next_pop);
+                    else
+                        printf("Error : 0 divisor\n");
+                    break;
+                case '%':
+                    next_pop = pop();
+                    if (next_pop != 0)
+                        push((int)pop() % (int)next_pop);
+                    else
+                        printf("Error : 0 divisor\n");
+                    break;
+                case '\n':
+            //Print output
+                    printf("\t%g\n", pop());
+                    break;
+                default:
+                    printf("Error : Unknown command %s\n", input_string);
+                    break;
         }
     }
 
     return 0;
-}            
-        
+}
