@@ -12,7 +12,7 @@ double stack[MAX_STACK_SIZE];
 char buffer[BUFFER_SIZE];
 int buffer_index = 0;
 
-//Function for pushing into stack
+// Function for pushing into stack
 void push(double new_stack_number) {
     if (stack_index < MAX_STACK_SIZE)
         stack[stack_index++] = new_stack_number;
@@ -20,7 +20,7 @@ void push(double new_stack_number) {
         printf("Error : Stack full\n");
 }
 
-//Function for poping from stack
+// Function for poping from stack
 double pop() {
     if (stack_index > 0) 
         return stack[--stack_index];
@@ -30,12 +30,15 @@ double pop() {
     }
 }
 
-//Function for getting input characters
+// Function for getting input characters
 int get_character() {
-    return (buffer_index > 0) ? buffer[--buffer_index] : getchar();
+    if (buffer_index > 0)
+        return  buffer[--buffer_index];
+    else 
+        return getchar();
 }
 
-//Function to "undo" get_character()
+// Function to "undo" get_character()
 void unget_character(int character) {
     if (buffer_index >= BUFFER_SIZE)
         printf("Ungetch : Too many characters\n");
@@ -43,45 +46,38 @@ void unget_character(int character) {
         buffer[buffer_index++] = character;
 }
 
-//Function to get the digits of a number
+// Function to get the digits of a number
 void get_digits(char string[]) {
     int string_index = 0;
-    int character;
 
     do {
         string[++string_index] = get_character();
     } while (isdigit(string[string_index]) || string[string_index] == '.');
            
-    character = string[string_index];
+    if (string[string_index] != EOF) 
+        unget_character(string[string_index]);
 
     string[string_index] = '\0';
-    
-    if (character != EOF) 
-        unget_character(character);
 }
     
-//Function to get the type of input : Number / Operators
+// Function to get the type of input : Number / Operators
 int get_operators(char input_string[]) {
     int character = get_character();
 
-    //Ignore the spaces beetween characters
-    while (isspace(character) && character != '\n') {
-        character = get_character();
-    }
+    // Ignore the spaces beetween characters
+    for (character; isspace(character) && character != '\n'; character = get_character()); 
 
-    //Return the operator, except in case of '-'
+    // Return the operator, except in case of '-'
     if (!isdigit(character) && character != '.' && character != '-')
         return character;
 
     if (character != '-') {
         input_string[0] = character;
         get_digits(input_string);
-
         return NUMBER;
     } else if (stack_index < 2) {
         input_string[0] = '-';
         get_digits(input_string);    
-        
         return NUMBER;
     } else {
         return '-';
@@ -97,12 +93,12 @@ int main() {
         double first_operand;
         double second_operand;
         type = get_operators(input_string);
-        switch(type) {
-            //Push the number into the stack
+        switch (type) {
+            // Push the number into the stack
             case NUMBER:
                 push(atof(input_string));
                 break;
-            //Do the requested operations
+            // Do the requested operations
             case '+':
                 push(pop() + pop());
                 break;
@@ -130,7 +126,7 @@ int main() {
                 else
                     printf("Error : 0 divisor\n");
                 break;
-            //Print output
+            // Print output
             case '\n':
                 printf("\t%g\n", pop());
                 break;
