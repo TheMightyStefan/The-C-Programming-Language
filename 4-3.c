@@ -48,22 +48,10 @@ void get_digits(char string[]) {
     int string_index = 0;
     int character;
 
-    string[++string_index] = get_character();
-
-    while (isdigit(string[string_index])) {
+    do {
         string[++string_index] = get_character();
-    }
+    } while (isdigit(string[string_index]) || string[string_index] == '.');
            
-    character = string[string_index];
-
-    if (character == '.') {
-        string[++string_index] = get_character();
-
-        while (isdigit(string[string_index])) {
-            string[++string_index] = get_character();
-        }
-    }
-    
     character = string[string_index];
 
     string[string_index] = '\0';
