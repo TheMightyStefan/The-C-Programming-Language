@@ -65,7 +65,8 @@ int get_operators(char input_string[]) {
     int character = get_character();
 
     // Ignore the spaces beetween characters
-    for (character; isspace(character) && character != '\n'; character = get_character()); 
+    while (isspace(character) && character != '\n')
+        character = get_character(); 
 
     // Return the operator, except in case of '-'
     if (!isdigit(character) && character != '.' && character != '-')
@@ -87,11 +88,11 @@ int get_operators(char input_string[]) {
 
 int main() {
     int type;
-    char input_string[MAX_OPERATORS];
 
     do {
         double first_operand;
         double second_operand;
+        char input_string[MAX_OPERATORS];
         type = get_operators(input_string);
         switch (type) {
             // Push the number into the stack
