@@ -42,14 +42,20 @@ void unget_character(int character) {
     else
         buffer[buffer_index++] = character;
 }
+
+//Function to get the digits of a number
 void get_digits(char string[]) {
     int string_index = 0;
     int character;
-    while (isdigit(string[++string_index] = character = get_character()));
+    while (isdigit(string[++string_index] = get_character()));
+        
+    character = string[string_index];
     
     if (character == '.')
-        while (isdigit(string[++string_index] = character = get_character()));
+        while (isdigit(string[++string_index] = get_character()));
     
+    character = string[string_index];
+
     string[string_index] = '\0';
     
     if (character != EOF) 
@@ -61,15 +67,14 @@ int get_operators(char input_string[]) {
     int character;
 
     //Ignore the spaces beetween characters
-    while ((input_string[0] = character = get_character()) == ' ' || character == '\t');
-
-    input_string[1] = '\0';
+    while (isspace((character = get_character())) && character != '\n');
 
     //Return the operator, except in case of '-'
     if (!isdigit(character) && character != '.' && character != '-')
         return character;
 
     if (character != '-') {
+        input_string[0] = character;
         get_digits(input_string);
         return NUMBER;
 
