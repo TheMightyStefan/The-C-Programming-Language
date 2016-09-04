@@ -47,12 +47,22 @@ void unget_character(int character) {
 void get_digits(char string[]) {
     int string_index = 0;
     int character;
-    while (isdigit(string[++string_index] = get_character()));
-        
+
+    string[++string_index] = get_character();
+
+    while (isdigit(string[string_index])) {
+        string[++string_index] = get_character();
+    }
+           
     character = string[string_index];
-    
-    if (character == '.')
-        while (isdigit(string[++string_index] = get_character()));
+
+    if (character == '.') {
+        string[++string_index] = get_character();
+
+        while (isdigit(string[string_index])) {
+            string[++string_index] = get_character();
+        }
+    }
     
     character = string[string_index];
 
@@ -64,10 +74,13 @@ void get_digits(char string[]) {
     
 //Function to get the type of input : Number / Operators
 int get_operators(char input_string[]) {
-    int character;
+    int character = get_character();
 
     //Ignore the spaces beetween characters
-    while (isspace((character = get_character())) && character != '\n');
+
+    while (isspace(character) && character != '\n') {
+        character = get_character();
+    }
 
     //Return the operator, except in case of '-'
     if (!isdigit(character) && character != '.' && character != '-')
@@ -78,17 +91,16 @@ int get_operators(char input_string[]) {
         get_digits(input_string);
         return NUMBER;
 
+    } else if (stack_index < 2) {
+        input_string[0] = '-';
+        get_digits(input_string);    
+        
+        return NUMBER;
     } else {
-        if (stack_index < 2) {
-            input_string[0] = '-';
-            get_digits(input_string);
-            
-            return NUMBER;
-        } else {
-            return '-';
-            }
+        return '-';
     }
 }
+
 
 int main() {
     int type;
