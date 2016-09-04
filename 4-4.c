@@ -24,9 +24,6 @@ double stack[MAX_STACK_SIZE];
 char buffer[BUFFER_SIZE];
 int buffer_index = 0;
 
-void clear_stack() {
-    stack_index = 0;
-}
 // Function for pushing into stack
 void push(double new_stack_number) {
     if (stack_index < MAX_STACK_SIZE)
@@ -100,6 +97,29 @@ int get_operators(char input_string[]) {
     }
 }
 
+void duplicate_top_item_stack() {
+    double operand = pop();
+    push(operand);
+    push(operand);
+}
+
+void print_top_item_stack() {
+    double operand = pop();
+    printf("\t%.8g", operand);
+    push(operand);
+}
+
+void switch_top_items_stack() {
+    double first_operand = pop();
+    double second_operand = pop();
+    push(first_operand);
+    push(second_operand);
+}
+
+void clear_stack() {
+    stack_index = 0;
+}
+
 int main() {
     int type;
 
@@ -142,20 +162,13 @@ int main() {
                     printf("Error : 0 divisor\n");
                 break;
             case 'P':
-                first_operand = pop();
-                printf("\t%.8g", first_operand);
-                push(first_operand);
+                print_top_item_stack();
                 break;
             case 'D': 
-                first_operand = pop();
-                push(first_operand);
-                push(first_operand);
+                duplicate_top_item_stack();
                 break;
             case 'S':
-                first_operand = pop();
-                second_operand = pop();
-                push(first_operand);
-                push(second_operand);
+                switch_top_items_stack();
                 break;
             case 'C' :
                 clear_stack();
