@@ -12,7 +12,7 @@ double stack[MAX_STACK_SIZE];
 char buffer[BUFFER_SIZE];
 int buffer_index = 0;
 
-// Function for pushing into stack
+//Function for pushing into stack
 void push(double new_stack_number) {
     if (stack_index < MAX_STACK_SIZE)
         stack[stack_index++] = new_stack_number;
@@ -65,7 +65,6 @@ int get_operators(char input_string[]) {
     int character = get_character();
 
     //Ignore the spaces beetween characters
-
     while (isspace(character) && character != '\n') {
         character = get_character();
     }
@@ -77,8 +76,8 @@ int get_operators(char input_string[]) {
     if (character != '-') {
         input_string[0] = character;
         get_digits(input_string);
-        return NUMBER;
 
+        return NUMBER;
     } else if (stack_index < 2) {
         input_string[0] = '-';
         get_digits(input_string);    
@@ -92,10 +91,11 @@ int get_operators(char input_string[]) {
 
 int main() {
     int type;
-    double next_pop;
     char input_string[MAX_OPERATORS];
 
     do {
+        double first_operand;
+        double second_operand;
         type = get_operators(input_string);
         switch(type) {
             //Push the number into the stack
@@ -110,25 +110,28 @@ int main() {
                 push(pop() * pop());
                 break;
             case '-':
-                next_pop = pop();
-                push(pop() - next_pop);
+                second_operand = pop();
+                first_operand = pop();
+                push(first_operand - second_operand);
                 break;
             case '/':
-                next_pop = pop();
-                if (next_pop != 0)
-                    push(pop() / next_pop);
+                second_operand = pop();
+                first_operand = pop();
+                if (second_operand != 0)
+                    push(first_operand / second_operand);
                 else
                     printf("Error : 0 divisor\n");
                 break;
             case '%':
-                next_pop = pop();
-                if (next_pop != 0)
-                    push((int)pop() % (int)next_pop);
+                second_operand = pop();
+                first_operand = pop();
+                if (second_operand != 0)
+                    push((int)first_operand % (int)second_operand);
                 else
                     printf("Error : 0 divisor\n");
                 break;
-            case '\n':
             //Print output
+            case '\n':
                 printf("\t%g\n", pop());
                 break;
             default:
