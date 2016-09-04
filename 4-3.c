@@ -95,46 +95,47 @@ int main() {
     double next_pop;
     char input_string[MAX_OPERATORS];
 
-    while ((type = get_operators(input_string)) != EOF) {
-            switch(type) {
+    do {
+        type = get_operators(input_string);
+        switch(type) {
             //Push the number into the stack
-                case NUMBER:
-                    push(atof(input_string));
-                    break;
+            case NUMBER:
+                push(atof(input_string));
+                break;
             //Do the requested operations
-                case '+':
-                    push(pop() + pop());
-                    break;
-                case '*':
-                    push(pop() * pop());
-                    break;
-                case '-':
-                    next_pop = pop();
-                    push(pop() - next_pop);
-                    break;
-                case '/':
-                    next_pop = pop();
-                    if (next_pop != 0)
-                        push(pop() / next_pop);
-                    else
-                        printf("Error : 0 divisor\n");
-                    break;
-                case '%':
-                    next_pop = pop();
-                    if (next_pop != 0)
-                        push((int)pop() % (int)next_pop);
-                    else
-                        printf("Error : 0 divisor\n");
-                    break;
-                case '\n':
+            case '+':
+                push(pop() + pop());
+                break;
+            case '*':
+                push(pop() * pop());
+                break;
+            case '-':
+                next_pop = pop();
+                push(pop() - next_pop);
+                break;
+            case '/':
+                next_pop = pop();
+                if (next_pop != 0)
+                    push(pop() / next_pop);
+                else
+                    printf("Error : 0 divisor\n");
+                break;
+            case '%':
+                next_pop = pop();
+                if (next_pop != 0)
+                    push((int)pop() % (int)next_pop);
+                else
+                    printf("Error : 0 divisor\n");
+                break;
+            case '\n':
             //Print output
-                    printf("\t%g\n", pop());
-                    break;
-                default:
-                    printf("Error : Unknown command %s\n", input_string);
-                    break;
-        }
-    }
+                printf("\t%g\n", pop());
+                break;
+            default:
+                printf("Error : Unknown command %s\n", input_string);
+                break;
+        } 
+    } while (type != EOF);
 
     return 0;
 }
