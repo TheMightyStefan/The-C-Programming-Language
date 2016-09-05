@@ -97,7 +97,7 @@ int get_operators(char input_string[]) {
     }
 }
 
-double top_stack_item() {
+double top() {
     double operand = pop();
     push(operand);
     return operand; 
@@ -149,10 +149,10 @@ int main() {
                     printf("Error : 0 divisor\n");
                 break;
             case 'P':
-                printf("\t%g\n", top_stack_item());
+                printf("\t%g\n", top());
                 break;
             case 'D': 
-                push(top_stack_item());
+                push(top());
                 break;
             case 'S':
                 first_operand = pop();
