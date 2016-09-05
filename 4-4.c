@@ -97,19 +97,13 @@ int get_operators(char input_string[]) {
     }
 }
 
-void duplicate_top_item_stack() {
+double top_stack_item() {
     double operand = pop();
     push(operand);
-    push(operand);
+    return operand;
 }
 
-void print_top_item_stack() {
-    double operand = pop();
-    printf("\t%.8g", operand);
-    push(operand);
-}
-
-void switch_top_items_stack() {
+void switch_top_stack_items() {
     double first_operand = pop();
     double second_operand = pop();
     push(first_operand);
@@ -162,13 +156,13 @@ int main() {
                     printf("Error : 0 divisor\n");
                 break;
             case 'P':
-                print_top_item_stack();
+                printf("\t%g\n", top_stack_item());
                 break;
             case 'D': 
-                duplicate_top_item_stack();
+                push(top_stack_item());
                 break;
             case 'S':
-                switch_top_items_stack();
+                switch_top_stack_items();
                 break;
             case 'C' :
                 clear_stack();
