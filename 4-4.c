@@ -100,14 +100,7 @@ int get_operators(char input_string[]) {
 double top_stack_item() {
     double operand = pop();
     push(operand);
-    return operand;
-}
-
-void switch_top_stack_items() {
-    double first_operand = pop();
-    double second_operand = pop();
-    push(first_operand);
-    push(second_operand);
+    return operand; 
 }
 
 void clear_stack() {
@@ -162,7 +155,10 @@ int main() {
                 push(top_stack_item());
                 break;
             case 'S':
-                switch_top_stack_items();
+                first_operand = pop();
+                second_operand = pop();
+                push(first_operand);
+                push(second_operand);
                 break;
             case 'C' :
                 clear_stack();
