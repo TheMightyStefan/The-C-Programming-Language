@@ -98,9 +98,13 @@ int get_operators(char input_string[]) {
 }
 
 double top() {
-    double operand = pop();
-    push(operand);
-    return operand; 
+    if (stack_index > 0) {
+        return stack[stack_index - 1]; 
+    }
+    else {
+        printf("Error : Stack empty\n");
+        return 0;
+    }
 }
 
 void clear_stack() {
