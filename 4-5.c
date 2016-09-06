@@ -134,22 +134,6 @@ void clear_stack() {
     stack_index = 0;
 }
 
-void handle_math_function(char string[]) {
-    double operand;
-
-    if (strcmp(string, "sin") == 0) 
-        push(sin(pop()));
-    else if (strcmp(string, "cos") == 0)
-        push(cos(pop()));
-    else if (strcmp(string, "exp") == 0)
-        push(exp(pop()));
-    else if (strcmp(string, "pow") == 0) {
-        operand = pop();
-        push(pow(pop(), operand));
-    } else 
-        printf("Unsupported function : %s\n", string);
-}
-
 int main() {
     int type;
 
@@ -164,7 +148,18 @@ int main() {
                 push(atof(input_string));
                 break;
             case MATH:
-                handle_math_function(input_string);
+                if (strcmp(input_string, "sin") == 0)
+                    push(sin(pop()));
+                else if (strcmp(input_string, "cos") == 0)
+                    push(cos(pop()));
+                else if (strcmp(input_string, "exp") == 0)
+                    push(exp(pop()));
+                else if (strcmp(input_string, "pow") == 0) {
+                    first_operand = pop();
+                    second_operand = pop();
+                    push(pow(second_operand, first_operand));
+                } else
+                    printf("Unsupported function : %s\n", input_string);
                 break;
             // Do the requested operations
             case '+':
