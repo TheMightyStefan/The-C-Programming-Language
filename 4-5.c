@@ -19,6 +19,11 @@
 // Command to switch the top elements of the stack
 #define SWITCH '~'
 
+#define SIN ']'
+#define COS '['
+#define EXP '{'
+#define POW '}'
+
 #define MATH '&'
 #define MAX_OPERATORS 100
 #define NUMBER '0'
@@ -96,12 +101,19 @@ int get_operators(char input_string[]) {
   
         input_string[string_index] = '\0';
 
-        printf("%s\n", input_string);
-
         if (character != EOF)
             unget_character(character);
-    
-        return MATH;
+
+        if (strcmp(input_string, "sin") == 0)
+            return SIN;
+        else if (strcmp(input_string, "cos") == 0)
+            return COS;
+        else if (strcmp(input_string, "exp") == 0)
+            return EXP;
+        else if (strcmp(input_string, "pow") == 0) {
+            return POW;
+        } else
+            printf("Unsupported function : %s\n", input_string);
     }
     // Return the operator, except in case of '-'
     if (!isdigit(character) && !isalpha(character) && character != '.' && character != '-')
@@ -147,19 +159,19 @@ int main() {
             case NUMBER:
                 push(atof(input_string));
                 break;
-            case MATH:
-                if (strcmp(input_string, "sin") == 0)
-                    push(sin(pop()));
-                else if (strcmp(input_string, "cos") == 0)
-                    push(cos(pop()));
-                else if (strcmp(input_string, "exp") == 0)
-                    push(exp(pop()));
-                else if (strcmp(input_string, "pow") == 0) {
-                    first_operand = pop();
-                    second_operand = pop();
-                    push(pow(second_operand, first_operand));
-                } else
-                    printf("Unsupported function : %s\n", input_string);
+            case SIN:
+                push(sin(pop()));
+                break;
+            case COS:
+                push(cos(pop()));
+                break;
+            case EXP:
+                push(exp(pop()));
+                break;
+            case POW:
+                first_operand = pop();
+                second_operand = pop();
+                push(pow(second_operand, first_operand));
                 break;
             // Do the requested operations
             case '+':
