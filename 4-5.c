@@ -17,7 +17,8 @@
 // Command to switch the top elements of the stack
 #define SWITCH 'S'
 
-#define RESULT '\n'
+#define ERROR 'E'
+#define GET_RESULT '\n'
 #define ARITH ':'
 #define MATH ';'
 #define STACK '&'
@@ -53,7 +54,7 @@ double pop() {
 // Function for getting input characters
 int get_character() {
     if (buffer_index > 0)
-        return  buffer[--buffer_index];
+        return buffer[--buffer_index];
     else
         return getchar();
 }
@@ -81,11 +82,11 @@ void get_digits(char string[]) {
 }
 
 // Function to get the type of input : Number / Operators
-int get_operators(char input_string[]) {
+int get_type(char input_string[]) {
     int character = get_character();
 
     // Ignore the spaces beetween characters
-    while (isspace(character) && character != RESULT)
+    while (isspace(character) && character != GET_RESULT)
         character = get_character();
 
     if (isalpha(character)) {
@@ -107,15 +108,11 @@ int get_operators(char input_string[]) {
             return STACK;
         }
     }
-    if (character == RESULT)
-        return RESULT;
+    if (character == GET_RESULT)
+        return GET_RESULT;
 
-    if (character != '-' && isdigit(character)) {
+    if ((character != '-' && isdigit(character)) || (character == '-' && stack_index < 2)) {
         input_string[0] = character;
-        get_digits(input_string);
-        return NUMBER;
-    } else if (character == '-' && stack_index < 2) {
-        input_string[0] = '-';
         get_digits(input_string);
         return NUMBER;
     }
@@ -123,7 +120,9 @@ int get_operators(char input_string[]) {
     if (!isdigit(character) && !isalpha(character) && character != '.') {
         input_string[0] = character;
         return ARITH;
-    }
+    }    
+    // If something goes wrong
+    return ERROR;
 }
 
 double top() {
@@ -212,7 +211,7 @@ int main() {
     do {
         char input_string[MAX_OPERATORS];
         
-        type = get_operators(input_string);
+        type = get_type(input_string);
         switch (type) {
             // Push the number into the stack
             case NUMBER:
@@ -227,7 +226,7 @@ int main() {
             case STACK:
                 do_stack_stuff(input_string[0]);
                 break;
-            case RESULT:
+            case GET_RESULT:
                 printf("\t%g\n", pop());
                 break;
             default:
