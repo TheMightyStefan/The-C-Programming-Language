@@ -4,6 +4,7 @@
 #include <math.h>
 #include <string.h>
 
+
 // Command to print the top element of the stack
 #define PRINT '#'
 
@@ -19,12 +20,15 @@
 // Command to switch the top elements of the stack
 #define SWITCH '~'
 
+#define ARITH ':'
+#define MATH ';'
+#define STACK '&'
+
 #define SIN ']'
 #define COS '['
 #define EXP '{'
 #define POW '}'
 
-#define MATH '&'
 #define MAX_OPERATORS 100
 #define NUMBER '0'
 #define MAX_STACK_SIZE 100
@@ -34,6 +38,7 @@ int stack_index = 0;
 double stack[MAX_STACK_SIZE];
 char buffer[BUFFER_SIZE];
 int buffer_index = 0;
+char key_character;
 
 // Function for pushing into stack
 void push(double new_stack_number) {
@@ -103,21 +108,19 @@ int get_operators(char input_string[]) {
 
         if (character != EOF)
             unget_character(character);
-
-        if (strcmp(input_string, "sin") == 0)
-            return SIN;
-        else if (strcmp(input_string, "cos") == 0)
-            return COS;
-        else if (strcmp(input_string, "exp") == 0)
-            return EXP;
-        else if (strcmp(input_string, "pow") == 0) {
-            return POW;
-        } else
-            printf("Unsupported function : %s\n", input_string);
+        
+        if (strlen(input_string) > 1)
+            return MATH;
+        else {
+            key_character = character;
+            return STACK;
+        }
     }
     // Return the operator, except in case of '-'
-    if (!isdigit(character) && !isalpha(character) && character != '.' && character != '-')
-        return character;
+    if (!isdigit(character) && !isalpha(character) && character != '.' && character != '-') {
+        key_character = character;
+        return ARITH;
+    }
 
     if (character != '-') {
         input_string[0] = character;
@@ -128,7 +131,7 @@ int get_operators(char input_string[]) {
         get_digits(input_string);
         return NUMBER;
     } else {
-        return '-';
+        return ARITH;
     }
 }
 
@@ -142,6 +145,29 @@ double top() {
     }
 }
 
+char get_arith_operator(int operator) {
+    return operator; 
+}
+
+char get_math_function(char function[]) {
+    if (strcmp(function, "sin") == 0)
+        return SIN;
+    else if (strcmp(function, "cos") == 0)
+        return COS;
+    else if (strcmp(function, "exp") == 0)
+        return EXP;
+    else if (strcmp(function, "pow") == 0) 
+        return POW;
+    else {
+        return '0';
+        printf("\nError : Function unsupported : %s", function);
+    }
+}
+
+char get_stack_command(char command) {
+    return command;
+}
+    
 void clear_stack() {
     stack_index = 0;
 }
@@ -159,65 +185,76 @@ int main() {
             case NUMBER:
                 push(atof(input_string));
                 break;
-            case SIN:
-                push(sin(pop()));
+            case MATH:
+                switch(get_math_function(input_string)) {
+                    case SIN:
+                        push(sin(pop()));
+                        break;
+                    case COS:
+                        push(cos(pop()));
+                        break;
+                    case EXP:
+                        push(exp(pop()));
+                        break;
+                    case POW:
+                        first_operand = pop();
+                        second_operand = pop();
+                        push(pow(second_operand, first_operand));
+                        break;
+                }
                 break;
-            case COS:
-                push(cos(pop()));
+            case ARITH: 
+                switch(get_arith_operator(key_character)) {
+                    case '+':
+                        push(pop() + pop());
+                        break;
+                    case '*':
+                        push(pop() * pop());
+                        break;
+                    case '-':
+                        second_operand = pop();
+                        first_operand = pop();
+                        push(first_operand - second_operand);
+                        break;
+                    case '/':
+                        second_operand = pop();
+                        first_operand = pop();
+                        if (second_operand != 0)
+                            push(first_operand / second_operand);
+                        else
+                            printf("Error : 0 divisor\n");
+                        break;
+                    case '%':
+                        second_operand = pop();
+                        first_operand = pop();
+                        if (second_operand != 0)
+                            push((int)first_operand % (int)second_operand);
+                        else
+                            printf("Error : 0 divisor\n");
+                        break;
+                }
                 break;
-            case EXP:
-                push(exp(pop()));
+            case STACK:
+                switch(get_stack_command(key_character)) {
+                    case PRINT:
+                        printf("\t%g\n", top());
+                        break;
+                    case DUPLICATE: 
+                        push(top());
+                        break;
+                    case SWITCH:
+                        first_operand = pop();
+                        second_operand = pop();
+                        push(first_operand);
+                        push(second_operand);
+                        break;
+                    case CLEAR:
+                        clear_stack();
+                        break;
+                }
                 break;
-            case POW:
-                first_operand = pop();
-                second_operand = pop();
-                push(pow(second_operand, first_operand));
-                break;
-            // Do the requested operations
-            case '+':
-                push(pop() + pop());
-                break;
-            case '*':
-                push(pop() * pop());
-                break;
-            case '-':
-                second_operand = pop();
-                first_operand = pop();
-                push(first_operand - second_operand);
-                break;
-            case '/':
-                second_operand = pop();
-                first_operand = pop();
-                if (second_operand != 0)
-                    push(first_operand / second_operand);
-                else
-                    printf("Error : 0 divisor\n");
-                break;
-            case '%':
-                second_operand = pop();
-                first_operand = pop();
-                if (second_operand != 0)
-                    push((int)first_operand % (int)second_operand);
-                else
-                    printf("Error : 0 divisor\n");
-                break;
-            case PRINT:
-                printf("\t%g\n", top());
-                break;
-            case DUPLICATE: 
-                push(top());
-                break;
-            case SWITCH:
-                first_operand = pop();
-                second_operand = pop();
-                push(first_operand);
-                push(second_operand);
-                break;
-            case CLEAR:
-                clear_stack();
-                break;
-            // Print output
             case '\n':
+                printf("\tNEWLINE\n");
                 printf("\t%g\n", pop());
                 break;
             default:
