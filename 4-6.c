@@ -18,7 +18,7 @@
 
 #define VARIABLE 5
 #define GET_LAST_VARIABLE 'x'
-#define CHANGE_VARIABLE 'y'
+#define CHANGE_VARIABLE 'S'
 
 #define MAX_OPERATORS 100
 #define NUMBER '0'
@@ -30,6 +30,8 @@ int stack_index = 0;
 double stack[MAX_STACK_SIZE];
 char buffer[BUFFER_SIZE];
 int buffer_index = 0;
+int var_gets_value = 0;
+int change_variable = 0;
 
 // Function for pushing into stack
 void push(double new_stack_number) {
@@ -82,7 +84,7 @@ void get_digits(char string[]) {
 // Function to get the type of input : Number / Operators
 int get_type(char input_string[]) {
     int character = get_character();
-
+    change_variable = 0;
     // Ignore the spaces beetween characters
     while (isspace(character) && character != GET_RESULT)
         character = get_character();
@@ -100,11 +102,22 @@ int get_type(char input_string[]) {
         if (character != EOF)
             unget_character(character);
 
-        if (strlen(input_string) > 1)
+        if (strlen(input_string) > 1) {
             return MATH;
-        else if (isalpha(input_string[0]) || input_string[0] == GET_LAST_VARIABLE || input_string[0] == CHANGE_VARIABLE)
-            return VARIABLE; 
-        else  
+        } else if ((isalpha(input_string[0]) && input_string[0] != CHANGE_VARIABLE) || input_string[0] == GET_LAST_VARIABLE)
+            return VARIABLE;
+        else if (input_string[0] == CHANGE_VARIABLE) {
+            change_variable = 1;
+            
+            do {
+                input_string[0] = get_character();
+            } while (input_string[0] == ' ');
+
+                if (isalpha(input_string[0])) {
+                    return VARIABLE;
+                } else 
+                    printf("\nInvalid change of variable");
+        } else 
             return STACK;
         
     }
@@ -148,45 +161,8 @@ void clear_stack() {
 
 char last_variable = 0;
 
-void change_variable() {
-    char var_to_change = 0;
-
-    while (var_to_change != 'x') {
-        printf("\n\nWhich variable would you want to change (Press x to cancel) ? : ");
-        scanf("%c", var_to_change);
-
-        switch (var_to_change) {
-                case 'A':
-                        printf("\nA = ");
-                        scanf("%d", var_A);
-                        break;
-                case 'B':
-                        printf("\nB = ");
-                        scanf("%d", var_B);
-                        break;
-                case 'C':
-                        printf("\nC = ");
-                        scanf("%d", var_C);
-                        break;
-                case 'D':
-                        printf("\nD = ");
-                        scanf("%d", var_D);
-                        break;
-                case 'E':
-                        printf("\nB = ");
-                        scanf("%d", var_B);
-                        break;
-                default:
-                        printf("\n\nVariable %c does not exist", var_to_change);
-        }
-    }
-}
-
 void get_variables(char variable) {
     switch (variable) {
-        case 'y':
-            change_variable();
-            break;
         case GET_LAST_VARIABLE:
             if (last_variable)
                 printf("\nThe last variable : %c", last_variable);
@@ -194,24 +170,36 @@ void get_variables(char variable) {
                 printf("\nThere is not a variable");
             break;
         case 'A':
+            if (change_variable)
+                var_A = pop();
             last_variable = 'A';
             push(var_A);
             break;
         case 'B':
+            if (var_gets_value)
+                var_B = pop();
             last_variable = 'B';
             push(var_B);
             break;
         case 'C':
+            if (var_gets_value) 
+                var_C = pop();
             last_variable = 'C';
             push(var_C);
             break;
         case 'D':
+            if (var_gets_value)
+                var_D = pop();
             last_variable = 'D';
             push(var_D);
             break;
         case 'E':
+            if (var_gets_value)
+                var_E = pop();
             last_variable = 'E';
             push(var_E);
+            break;
+        case CHANGE_VARIABLE:
             break;
         default:
             printf("\nNot a variable : %c", variable);
