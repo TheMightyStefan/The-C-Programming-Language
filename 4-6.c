@@ -18,7 +18,7 @@
 
 #define VARIABLE 5
 #define GET_LAST_VARIABLE 'x'
-#define CHANGE_VARIABLE 'S'
+#define CHANGE_VARIABLE 'c'
 
 #define MAX_OPERATORS 100
 #define NUMBER '0'
@@ -38,7 +38,7 @@ void push(double new_stack_number) {
     if (stack_index < MAX_STACK_SIZE)
         stack[stack_index++] = new_stack_number;
     else
-        printf("\nError : Stack full");
+        printf("Error : Stack full\n");
 }
 
 // Function for poping from stack
@@ -46,7 +46,7 @@ double pop() {
     if (stack_index > 0)
         return stack[--stack_index];
     else {
-        printf("\nError : Stack empty");
+        printf("Error : Stack empty\n");
         return 0;
     }
 }
@@ -62,7 +62,7 @@ int get_character() {
 // Function to "undo" get_character()
 void unget_character(int character) {
     if (buffer_index >= BUFFER_SIZE)
-        printf("\nUngetch : Too many characters");
+        printf("Ungetch : Too many characters\n");
     else
         buffer[buffer_index++] = character;
 }
@@ -116,7 +116,7 @@ int get_type(char input_string[]) {
                 if (isalpha(input_string[0])) {
                     return VARIABLE;
                 } else 
-                    printf("\nInvalid change of variable");
+                    printf("Invalid change of variable\n");
         } else 
             return STACK;
         
@@ -149,11 +149,7 @@ double top() {
 }
 
 // Default values of variables
-double var_A = 1;
-double var_B = 2;
-double var_C = 3;
-double var_D = 4;
-double var_E = 5;
+double var[30];
 
 void clear_stack() {
     stack_index = 0;
@@ -162,47 +158,25 @@ void clear_stack() {
 char last_variable = 0;
 
 void get_variables(char variable) {
-    switch (variable) {
-        case GET_LAST_VARIABLE:
-            if (last_variable)
-                printf("\nThe last variable : %c", last_variable);
-            else 
-                printf("\nThere is not a variable");
-            break;
-        case 'A':
-            if (change_variable)
-                var_A = pop();
-            last_variable = 'A';
-            push(var_A);
-            break;
-        case 'B':
-            if (var_gets_value)
-                var_B = pop();
-            last_variable = 'B';
-            push(var_B);
-            break;
-        case 'C':
-            if (var_gets_value) 
-                var_C = pop();
-            last_variable = 'C';
-            push(var_C);
-            break;
-        case 'D':
-            if (var_gets_value)
-                var_D = pop();
-            last_variable = 'D';
-            push(var_D);
-            break;
-        case 'E':
-            if (var_gets_value)
-                var_E = pop();
-            last_variable = 'E';
-            push(var_E);
-            break;
-        case CHANGE_VARIABLE:
-            break;
-        default:
-            printf("\nNot a variable : %c", variable);
+    if (isupper(variable)) {
+        for (int index = 0; index < 30; index++) 
+                if (index == (int)variable - 65) {
+                        if (change_variable)
+                                var[index] = top();
+                        last_variable = variable;
+                }
+    }  else     
+        switch (variable) {
+                case GET_LAST_VARIABLE:
+                        if (last_variable)
+                                printf("The last variable : %c\n", last_variable);
+                        else 
+                                printf("There is not a variable\n");
+                        break;
+                case CHANGE_VARIABLE:
+                         break;
+                default:
+                        printf("Not a variable : %c\n", variable);
     }
 }
 
@@ -218,7 +192,7 @@ void do_math_stuff(char function[]) {
         int base = pop();
         push(pow(base, power));
     } else
-        printf("\nError : Function unsupported : %s", function);
+        printf("Error : Function unsupported : %s\n", function);
 }
 
 void do_arith_stuff(char operator) {
