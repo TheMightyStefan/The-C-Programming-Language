@@ -29,22 +29,13 @@ void unget_string(char string[]) {
 
 int main() {
         char character;
-        char string[100];
-        int index = 0;
         
-        character = get_character();
-
-        do {
-            string[++index] = character;
-            character = get_character();
-        } while (character != '\n');
-
-        unget_string(string);
+        unget_string("abcdef");
 
         do {
             character = get_character();
             printf("%c", character);
-        } while (character != '\n');
+        } while (character != 'f');
 
         return 0;
 }
