@@ -3,18 +3,21 @@
 #include <stdlib.h>
 #define BUFFER_SIZE 100
 
-int get_character() {
-        if (buffer_index > 0)
-                return buffer[--buffer_index];
-        else
-                return getchar();
-}
+char buffer[100];
+int buffer_index = 0;
 
 void unget_character(int character) {
         if (buffer_index >= BUFFER_SIZE)
                 printf("\nUngetch : Too many characters");
         else
                 buffer[buffer_index++] = character;
+}
+
+int get_character() {
+        if (buffer_index > 0)
+                return buffer[--buffer_index];
+        else
+                return getchar();
 }
 
 void unget_string(char string[]) {
@@ -25,11 +28,10 @@ void unget_string(char string[]) {
 }
 
 int main() {
-        int buffer_index = 0;
-        char buffer[50];
-        char character;
         
         unget_string("abcdef");
+
+        char character;
 
         do {
                 character = get_character();
