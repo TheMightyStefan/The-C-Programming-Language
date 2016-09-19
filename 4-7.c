@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #define BUFFER_SIZE 100
 
-char buffer[100];
-int buffer_index = 0;
-
 int get_character() {
         if (buffer_index > 0)
                 return buffer[--buffer_index];
@@ -28,13 +25,15 @@ void unget_string(char string[]) {
 }
 
 int main() {
+        int buffer_index = 0;
+        char buffer[50];
         char character;
         
         unget_string("abcdef");
 
         do {
-            character = get_character();
-            printf("%c", character);
+                character = get_character();
+                printf("%c", character);
         } while (character != 'f');
 
         return 0;
