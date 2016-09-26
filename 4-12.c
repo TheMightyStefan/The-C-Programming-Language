@@ -3,26 +3,63 @@
 #include <stdio.h>
 
 void itoa(int number, char digit_string[]) {
-    static int index;
+    static int index = 0;
+
+    if (number < 0) {
+        digit_string[index] = '-';
+        number = -number;
+    }
 
     if (number / 10)
         itoa(number / 10, digit_string);
-    else {
+    else 
         index = 0;
-        if (number < 0)
-            digit_string[index++] = '-';
-    }
 
     digit_string[index++] = abs(number) % 10 + '0';
 
     digit_string[index] = '\0';
 }
 
+void itoa2(int number, char digit_string[], int index) {
+    if (number < 0) {
+        digit_string[0] = '-';
+        number = -number;
+    }
+
+    if (number / 10) {
+        index--;
+        itoa2(number / 10, digit_string, index);
+    } else if (digit_string[0] == '-')
+        index = 1;
+    else 
+        index = 0;
+
+    digit_string[index++] = abs(number) % 10 + '0';
+
+    digit_string[index] = '\0';
+}
+
+int digit_counter(int number) {
+    int digits = 0;
+
+    if (number < 0) {
+        digits++;
+        number = -number;
+    }
+
+    while (number > 0) {
+        number /= 10;
+        digits++;
+    }
+
+    return digits;
+}
+
 int main() {
-    int number = 10021;
+    int number = -432;
     char digit_string[100];
 
-    itoa(number, digit_string);
+    itoa2(number, digit_string, digit_counter(number));
 
     printf("\n%s", digit_string);
 
