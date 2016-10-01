@@ -20,47 +20,38 @@ void itoa(int number, char digit_string[]) {
     digit_string[index] = '\0';
 }
 
-void itoa2_operation(int number, char digit_string[], int index, int sign) {
+void itoa2_operation(int number, char digit_string[], int index) {
     if (number / 10) {
-        index--;
-        itoa2_operation(number / 10, digit_string, index, sign);
-    } else 
-        index = sign;
-
-    printf("\n%d -> %c", index, digit_string[index]);
+        itoa2_operation(number / 10, digit_string, --index);
+    } else if (digit_string[0] == '-')
+        index = 1;
+    else 
+        index = 0;
 
     digit_string[index] = abs(number) % 10 + '0';
 
     digit_string[++index] = '\0';
 }
 
-int digit_counter(int number) {
-    int digits = 0;
-
-    if (number < 0) {
-        digits++;
-        number = -number;
-    }
-
-    while (number > 0) {
-        number /= 10;
-        digits++;
-    }
-
-    return digits;
-}
-
 void itoa2(int number, char digit_string[]) {
+    int digits = 0;
+    int number_copy = -number;
+
+    while (number_copy != 0) {
+        number_copy /= 10;
+        digits++;
+    }
+    
     if (number < 0) {
         digit_string[0] = '-';
         number = -number;
-        itoa2_operation(number, digit_string, digit_counter(number), 1);
+        itoa2_operation(number, digit_string, digits + 1);
     } else
-        itoa2_operation(number, digit_string, digit_counter(number), 0);
+        itoa2_operation(number, digit_string, digits);
 }
 
 int main() {
-    int number = -221;
+    int number = 23423;
     char digit_string[100];
 
     itoa2(number, digit_string);
