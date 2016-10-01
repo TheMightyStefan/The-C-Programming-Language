@@ -1,31 +1,25 @@
 #include <string.h>
 #include <stdio.h>
 
-void reverse(char string[]) {
-    static int index_1 = 0;
-    static int index_2 = 0;
-    char tmp = 'a';
+void reverse(char string[], int index_from_start, int index_from_end) {
+    char tmp;
 
-    for (int index = 1; index_2 == 0; index++)
-        if (string[index] == '\0')
-            index_2 = index - 1;
+    if (index_from_start < index_from_end && index_from_start != index_from_end) {
+        tmp = string[index_from_start];
+        string[index_from_start] = string[index_from_end];
+        string[index_from_end] = tmp;
 
-    if (index_1 < index_2 && index_1 != index_2) {
-        tmp = string[index_1];
-        string[index_1] = string[index_2];
-        string[index_2] = tmp;
+        index_from_start++;
+        index_from_end--;
 
-        index_1++;
-        index_2--;
-
-        reverse(string);
+        reverse(string, index_from_start, index_from_end);
     }
 }
 
 int main() {
     char string[] = "Gigel scrie";
 
-    reverse(string);
+    reverse(string, 0, strlen(string) - 1);
 
     printf("%s\n", string);
 
