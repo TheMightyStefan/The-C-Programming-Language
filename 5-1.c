@@ -33,8 +33,11 @@ int get_integer(int *pointer) {
     }
     sign = (character == '-') ? -1 : 1;
    
-    if (character == '+' || character == '-')
+    if (character == '+' || character == '-') {
+        unget_character(character);
         character = get_character();
+        return 0;
+    }
 
     for (*pointer = 0; isdigit(character); character = get_character())
         *pointer = 10 * *pointer + (character - '0');
