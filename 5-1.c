@@ -34,9 +34,15 @@ int get_integer(int *pointer) {
     sign = (character == '-') ? -1 : 1;
    
     if (character == '+' || character == '-') {
-        unget_character(character);
-        character = get_character();
-        return 0;
+        int next_character = get_character();
+
+        if (isdigit(next_character)) {
+            character = next_character;
+        } else { 
+            unget_character(next_character);
+            unget_character(character);
+            return 0;
+        }
     }
 
     for (*pointer = 0; isdigit(character); character = get_character())
