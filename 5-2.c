@@ -73,7 +73,7 @@ int main() {
         double number;
 
         if (get_float(&number))
-            printf("\nFloat : %g", number);
+            printf("Float : %g\n", number);
     }
 
     return 0;
