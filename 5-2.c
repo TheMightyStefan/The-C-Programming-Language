@@ -67,7 +67,7 @@ int get_float(double *pointer) {
 }
 
 int main() {
-    char character = 'A';
+    char character = '\0';
 
     while (character != EOF) {
         double number;
