@@ -23,6 +23,10 @@ int get_character() {
 int get_float(double *pointer) {
     char character = get_character();
 
+    if (character == '\n') {
+        return -1;
+    }
+
     while (isspace(character)) 
         character = get_character();
 
@@ -67,14 +71,15 @@ int get_float(double *pointer) {
 }
 
 int main() {
-    char character = '\0';
+    int last_get_float;
 
-    while (character != EOF) {
+    do {
         double number;
+        last_get_float = get_float(&number);
 
-        if (get_float(&number))
+        if (last_get_float > 0)
             printf("Float : %g\n", number);
-    }
+    } while (last_get_float != -1);
 
     return 0;
 }
