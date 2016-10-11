@@ -20,20 +20,27 @@ int get_character() {
         return getchar();
 }
 
-int get_float(double *pointer) {
+int remove_useless() {
     char character = get_character();
 
-    if (character == '\n') {
-        return -1;
-    }
-
-    while (isspace(character)) 
+    while (isspace(character) && character != '\n')
         character = get_character();
 
-    if (!isdigit(character) && character != EOF && character != '+' && character != '-') {
+    if (character == '\n')
+        return 1;
+
+    else if (!isdigit(character) && character != EOF && character != '+' && character != '-') {
         unget_character(character);
         return 0;
     }
+
+    unget_character(character);
+
+    return 0;
+}
+
+int get_float(double *pointer) {
+    char character = get_character();
 
     int sign = (character == '-') ? -1 : 1;
    
@@ -71,15 +78,12 @@ int get_float(double *pointer) {
 }
 
 int main() {
-    int last_get_float;
-
-    do {
+    while (remove_useless() != 1) {
         double number;
-        last_get_float = get_float(&number);
 
-        if (last_get_float > 0)
+        if (get_float(&number))
             printf("Float : %g\n", number);
-    } while (last_get_float != -1);
+    }
 
     return 0;
 }
