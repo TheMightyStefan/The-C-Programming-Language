@@ -20,7 +20,7 @@ int get_character() {
         return getchar();
 }
 
-int remove_useless() {
+int remove_spaces() {
     char character = get_character();
 
     while (isspace(character) && character != '\n')
@@ -29,11 +29,6 @@ int remove_useless() {
     if (character == '\n')
         return 1;
 
-    else if (!isdigit(character) && character != EOF && character != '+' && character != '-') {
-        unget_character(character);
-        return 0;
-    }
-
     unget_character(character);
 
     return 0;
@@ -41,6 +36,11 @@ int remove_useless() {
 
 int get_float(double *pointer) {
     char character = get_character();
+
+    if (!isdigit(character) && character != EOF && character != '+' && character != '-') {
+        unget_character(character);
+        return 0;
+    }
 
     int sign = (character == '-') ? -1 : 1;
    
@@ -78,7 +78,7 @@ int get_float(double *pointer) {
 }
 
 int main() {
-    while (remove_useless() != 1) {
+    while (!remove_spaces()) {
         double number;
 
         if (get_float(&number))
