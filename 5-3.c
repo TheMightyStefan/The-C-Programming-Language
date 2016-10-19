@@ -2,19 +2,15 @@
 #include <string.h>
 
 void string_concatenation(char result[], char to_add[]) {
-    int index = strlen(result);
-
-    while (*to_add != '\0') {
+    for (int index = strlen(result); *to_add != '\0'; index++)
         *(result + index) = *to_add++;
-        index++;
-    }
 }
 
 int main() {
     char result[] = "Ionel il cheama pe ";
     char to_add[] = "Gigel";
 
-    string_concatenation(&result[0], &to_add[0]);
+    string_concatenation(result, to_add);
 
     printf("\n%s", result);
 
