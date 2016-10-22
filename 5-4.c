@@ -8,8 +8,8 @@ int strend(char search[], char target[]) {
     if (search_length < target_length || !target_length || !search_length)
         return 0;
 
-    while (target_length > -1) {
-        if (*(target + target_length--) != *(search + search_length--))
+    for ( ; target_length > -1; target_length--, search_length--) {
+        if (*(target + target_length) != *(search + search_length))
                 return 0;
     }
     
@@ -21,9 +21,9 @@ int main() {
     char target[] = "Gigel";
 
     if (strend(search, target))
-        printf("\nFound");
+        printf("Found\n");
     else
-        printf("\nNot Found");
+        printf("Not Found\n");
 
     return 0;
 }
