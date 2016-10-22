@@ -8,7 +8,7 @@ void string_copy(char copy[], char target[], int length) {
     *target = '\0';
 }
 
-void string_canonetation(char result[], char to_add[], int length) {
+void string_concanetation(char result[], char to_add[], int length) {
     int index = strlen(result);
 
     for ( ; *to_add != '\0' && length; index++, length--)
@@ -42,12 +42,12 @@ int string_compare(char first[], char second[], int length) {
 
 }
 int main() {
-    char string_1[] = "First String";
-    char string_2[] = "Second String";
+    char string_1[100] = "First String";
+    char string_2[100] = "Second String";
 
     printf("\n%d", string_compare(string_1, string_2, 12));
 
-    string_canonetation(string_1, string_2, 4);
+    string_concanetation(string_1, string_2, 4);
 
     printf("\n%s", string_1);
 
