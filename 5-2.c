@@ -3,7 +3,7 @@
 
 int remove_spaces(char string[], int *index) {
     while (isspace(string[*index]) && string[*index] != '\n')
-        *index++;
+        (*index)++;
 
     return 0;
 }
@@ -16,20 +16,20 @@ int get_float(double *pointer, char string[], int *index) {
    
     if (string[*index] == '+' || string[*index] == '-') {
         if (isdigit(string[*index + 1])) {
-            *index++;
+            (*index)++;
         } else 
             return 0;
     }
 
-    for (*pointer = 0; isdigit(string[*index]); *index++)
+    for (*pointer = 0; isdigit(string[*index]); (*index)++)
         *pointer = 10 * *pointer + (string[*index] - '0');
 
     double power = 1;
 
     if (string[*index] == '.') {
-        index++;
+        (*index)++;
 
-        for (power = 1.0; isdigit(string[*index]); *index++) {
+        for (power = 1.0; isdigit(string[*index]); (*index)++) {
             *pointer = 10.0 * *pointer + (string[*index] - '0');
             power *= 10.0;
         }
@@ -44,16 +44,15 @@ int main() {
     double number;
     int index = 0;
 
-    for (int index = 0; input[index] != EOF; index++) {
-        input[index] = getchar();
+    input[index] = getchar();
+ 
+    while (input[index] != '\n') {
+        input[++index] = getchar();
     }
 
-    if (input[index] == '\n')
-        input[index] = '\0';
+    index = 0;
 
-    while (input[index] != '\0') {
-        printf("\n%d", index);
-
+    while (input[index] != '\n') {
         remove_spaces(input, &index);
         if (get_float(&number, input, &index))
             printf("Float : %g\n", number);
