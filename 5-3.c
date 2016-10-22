@@ -2,13 +2,10 @@
 #include <string.h>
 
 void string_concatenation(char result[], char to_add[]) {
-    int index = 0;
     int len = strlen(result);
 
-    while (index != strlen(to_add)) { 
+    for (int index = 0; index != strlen(to_add); index++) 
         result[index + len] = to_add[index];
-        index++;
-    }
 }
 
 int main() {
