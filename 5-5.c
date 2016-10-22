@@ -1,23 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 
-void string_copy(char copy[], char target[], int size) {
-    while (*copy != '\0' && size) {
+void string_copy(char copy[], char target[], int length) {
+    for ( ; *copy != '\0' && length; length--) 
         *target++ = *copy++;
-        size--;
-    }
 
     *target = '\0';
 }
 
-void string_canonetation(char result[], char to_add[], int size) {
+void string_canonetation(char result[], char to_add[], int length) {
     int index = strlen(result);
 
-    while (*to_add != '\0' && size) {
+    for ( ; *to_add != '\0' && length; index++, length--)
         *(result + index) = *to_add++;
-        index++;
-        size--;
-    }
 
     *(result + index) = '\0';
 }
@@ -29,7 +24,7 @@ int string_compare(char first[], char second[], int length) {
     if (length == strlen(second))
         full_length = 1;
 
-    while (*(first + index) != '\0' && length) {
+    for ( ; *(first + index) != '\0' && length; index++, length--) {
         if (*(second + index) == '\0')
             return 1;
     
@@ -38,9 +33,6 @@ int string_compare(char first[], char second[], int length) {
 
         if (*(first + index) > *(second + index))
             return 1;
-
-        index++;
-        length--;
     }
 
     if (*(second + index) != '\0' && full_length)
