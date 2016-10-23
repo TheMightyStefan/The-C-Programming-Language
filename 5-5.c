@@ -45,15 +45,15 @@ int main() {
     char string_1[100] = "First String";
     char string_2[100] = "Second String";
 
-    printf("\n%d", string_compare(string_1, string_2, 12));
+    printf("%d\n", string_compare(string_1, string_2, 12));
 
     string_concanetation(string_1, string_2, 4);
 
-    printf("\n%s", string_1);
+    printf("%s\n", string_1);
 
     string_copy(string_1, string_2, 4);
 
-    printf("\n%s", string_2);
+    printf("%s\n", string_2);
 
     return 0;
 }
