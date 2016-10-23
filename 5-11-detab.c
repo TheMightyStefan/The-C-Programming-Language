@@ -1,15 +1,19 @@
+#include <stdlib.h>
 #include <stdio.h>
 
 int main (int argc, char **argv)
 {
     char character;
     int charsBehindTabStop = 0;
-    int arg_index = 0;
+    int arg_index = 1;
 
     while ((character = getchar()) != EOF) {
+        int tabstop = atof(argv[arg_index]);
+
+        printf("%d\n", tabstop);
         if (character == '\t') {
-            while (charsBehindTabStop < argv[arg_index][0]) {
-                printf(" ");
+            while (charsBehindTabStop < tabstop) {
+                printf("*");
                 charsBehindTabStop++;
             }
         } else {
@@ -17,7 +21,7 @@ int main (int argc, char **argv)
             charsBehindTabStop++;
         }
         
-        if (charsBehindTabStop == argv[arg_index][0]) {
+        if (charsBehindTabStop == tabstop) {
             charsBehindTabStop = 0;
             arg_index++;
         }
