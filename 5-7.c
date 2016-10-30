@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #define MAX_NUMBER_OF_LINES 50
+#define MAX_LINE_LENGTH 50
 
 void read_lines(char *line[], int *line_number) {
     int index = 0;
@@ -14,26 +15,25 @@ void read_lines(char *line[], int *line_number) {
             ++*line_number;
             index = 0;
             
-            printf("\nLINE NUMBER : %d\n", *line_number);
-
             line[*line_number][0] = getchar();
-
-            printf("\nCHAR : %c\n", line[*line_number][index]);
-        } else {
+        } else
             line[*line_number][++index] = getchar();
-            
-            printf("\nCHAR\n");
-        }
     }
 }
 
 void write_lines(char *line[], int lines_to_write) {
+    printf("\n");
+    
     for (int index = 0; index < lines_to_write; index++)
         printf("%s\n", line[index]);
 }
 
 int main() {
-    char *input[MAX_NUMBER_OF_LINES];
+    char **input = malloc(MAX_NUMBER_OF_LINES * sizeof(char *));
+
+    for (int index = 0; index < MAX_NUMBER_OF_LINES; index++)
+        input[index] = (char *)malloc(MAX_LINE_LENGTH + 1);
+
     int line_number = 0;
 
     read_lines(input, &line_number);
