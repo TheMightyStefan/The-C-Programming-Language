@@ -4,7 +4,6 @@
 
 #define MAX_LINES 50
 #define MAX_LINE_LENGTH 100
-#define STOP 'X'
 
 int main(int argc, char **argv) {
     char input[50][100];
@@ -13,8 +12,8 @@ int main(int argc, char **argv) {
 
     input[line][index] = getchar();
 
-    while (input[line][index] != STOP && line <= MAX_LINES) {
-        while (index < MAX_LINE_LENGTH && input[line][index] != '\n' && input[line][index] != STOP)
+    while (input[line][index] != EOF && line <= MAX_LINES) {
+        while (index < MAX_LINE_LENGTH && input[line][index] != '\n' && input[line][index] != EOF)
             input[line][++index] = getchar();
 
         if (input[line][index] == '\n') {
