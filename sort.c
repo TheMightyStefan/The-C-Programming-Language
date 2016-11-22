@@ -7,11 +7,11 @@
 #define GOT_THE_LINE 1
 #define END_OF_INPUT 0
 
-void swap(char *str_1, char *str_2) {
-    char *temp = str_1;
+void swap(char **str_1, char **str_2) {
+    char *temp = *str_1;
 
-    str_1 = str_2;
-    str_2 = temp;
+    *str_1 = *str_2;
+    *str_2 = temp;
 }
 
 void sort(char str[][MAX_STRING_LENGTH], int str_nr) {
@@ -26,13 +26,15 @@ int getline(char str[]) {
 
     do
         str[++index] = getchar();
-    while (str[index] != EOF && str[index] != '\0' && index < MAX_STRING_LENGTH);
+    while (str[index] != EOF && str[index] != '\n' && index < MAX_STRING_LENGTH);
 
     if (str[index] == EOF) {
         str[index] = '\0';
         return END_OF_INPUT;
     } else if (str[index] == '\n')
         str[index] = '\0';
+    else
+        printf("GETLINE ERROR\n");
 
     return GOT_THE_LINE;
 }
