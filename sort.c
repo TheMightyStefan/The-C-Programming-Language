@@ -8,8 +8,9 @@
 #define END_OF_INPUT 0
 
 void swap(char **str_1, char **str_2) {
-    char *temp = *str_1;
+    char *temp;
 
+    temp = *str_1;
     *str_1 = *str_2;
     *str_2 = temp;
 }
