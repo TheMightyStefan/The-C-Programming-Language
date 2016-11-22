@@ -4,12 +4,14 @@
 
 #define MAX_NUMBER_OF_STRINGS 40
 #define MAX_STRING_LENGTH 20
+#define GOT_THE_LINE 1
+#define END_OF_INPUT 0
 
-void swap(char **str_1, char **str_2) {
-    char *temp = *str_1;
+void swap(char *str_1, char *str_2) {
+    char *temp = str_1;
 
-    *str_1 = *str_2;
-    *str_2 = temp;
+    str_1 = str_2;
+    str_2 = temp;
 }
 
 void sort(char str[][MAX_STRING_LENGTH], int str_nr) {
@@ -19,29 +21,30 @@ void sort(char str[][MAX_STRING_LENGTH], int str_nr) {
               swap(str[index_2], str[index_2 + 1]);
 }
 
+int getline(char str[]) {
+    int index = -1;    
+
+    do
+        str[++index] = getchar();
+    while (str[index] != EOF && str[index] != '\0' && index < MAX_STRING_LENGTH);
+
+    if (str[index] == EOF) {
+        str[index] = '\0';
+        return END_OF_INPUT;
+    } else if (str[index] == '\n')
+        str[index] = '\0';
+
+    return GOT_THE_LINE;
+}
+
 int main() {
     char str[MAX_NUMBER_OF_STRINGS][MAX_STRING_LENGTH];
-    int index = -1;
-    int str_index = 0;
+    int str_index = -1;
 
-    do {
-        do
-          str[str_index][++index] = getchar();
-        while (str[str_index][index] != '\n' && str[str_index][index] != EOF);
-    
-        if (str[str_index][index] == '\n') {
-            str[str_index][index] = '\0';
- 
-            str_index++;
-            index = 0;
-            str[str_index][index] = getchar();
-        }
-
-        if (str[str_index][index] == EOF)
-            str[str_index][index] = '\0';
-        
-    } while (str[str_index][index] != '\0');
-  
+    do
+        str_index++;
+    while (getline(str[str_index]) == GOT_THE_LINE && str_index < MAX_NUMBER_OF_STRINGS);
+   
     sort(str, str_index);
 
     for (int index = 0; index <= str_index; index++)
