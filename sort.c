@@ -89,7 +89,10 @@ int main(int argc, char *argv[]) {
                     case 'n': 
                         numerical_sort(str, str_index);
                         break;     
-                   case 'r': 
+                   case 'r':
+                        if (arg_index == 1)
+                            sort(str, str_index);
+ 
                         backwards_sort(str, str_index);        
                         break;
                     default:
