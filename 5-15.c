@@ -10,6 +10,8 @@
 
 #define FOLD 'F'
 #define NORMAL 'N'
+#define BACKWARDS 'R'
+#define NUMERICAL 'n'
 
 int getnumber(char str[], int index) {
     for ( ; str[index] != '\0' && !isdigit(str[index]); index++);
@@ -30,26 +32,6 @@ void swap(char **str_1, char **str_2) {
     *str_2 = temp;
 }
 
-void backwards_sort(char str[][MAX_STRING_LENGTH], int str_nr) {
-    for (int index = 0; index < str_nr / 2; index++)
-        swap(str[index], str[str_nr - index - 1]);
-}
-
-void numerical_sort(char str[][MAX_STRING_LENGTH], int str_nr) {
-    for (int index_1 = 0; index_1 < str_nr; index_1++)
-        for (int index_2 = 0; index_2 < str_nr - 1; index_2++) {
-                int num_index = 0;
-
-                for ( ; str[index_2][num_index] == str[index_2 + 1][num_index]; num_index++);
-
-                if (isdigit(str[index_2][num_index]) && isdigit(str[index_2 + 1][num_index])) {
-                    if (getnumber(str[index_2], num_index - 1) > getnumber(str[index_2 + 1], num_index - 1))
-                        swap(str[index_2], str[index_2 + 1]);
-                } else if (strcmp(str[index_2], str[index_2 + 1]) > 0)
-                    swap(str[index_2], str[index_2 + 1]);
-        }
-}
-
 void create_lower(char str[], char temp[]) {
     for (int index = 0; str[index] != '\0'; index++) {
             if (isupper(str[index]))
@@ -60,6 +42,10 @@ void create_lower(char str[], char temp[]) {
 }       
     
 void sort(char str[][MAX_STRING_LENGTH], int str_nr, char arg) {    
+    if (arg == BACKWARDS)
+        for (int index = 0; index < str_nr / 2; index++)
+            swap(str[index], str[str_nr - index - 1]);
+
     for (int index_1 = 0; index_1 < str_nr; index_1++)
          for (int index_2 = 0; index_2 < str_nr - 1; index_2++) {
             if (arg == NORMAL) {
@@ -72,6 +58,16 @@ void sort(char str[][MAX_STRING_LENGTH], int str_nr, char arg) {
                 create_lower(str[index_2 + 1], temp[1]);
 
                 if (strcmp(temp[0], temp[1]) > 0)
+                    swap(str[index_2], str[index_2 + 1]);
+            } else if (arg == NUMERICAL) {
+                int num_index = 0;
+
+                for ( ; str[index_2][num_index] == str[index_2 + 1][num_index]; num_index++);
+
+                if (isdigit(str[index_2][num_index]) && isdigit(str[index_2 + 1][num_index])) {
+                    if (getnumber(str[index_2], num_index - 1) > getnumber(str[index_2 + 1], num_index - 1))
+                        swap(str[index_2], str[index_2 + 1]);
+                } else if (strcmp(str[index_2], str[index_2 + 1]) > 0)
                     swap(str[index_2], str[index_2 + 1]);
             }
         }
@@ -106,17 +102,19 @@ int main(int argc, char *argv[]) {
     if (argc == 1)
         sort(str, str_index, NORMAL);
     else {
+        int reverse = 0;
+
         for (int arg_index = 1; arg_index < argc; arg_index++) {
             if (*argv[arg_index] == '-') {
                 switch(*(argv[arg_index] + 1)) {
                     case 'n': 
-                        numerical_sort(str, str_index);
+                        sort(str, str_index, NUMERICAL);
                         break;     
                     case 'r':
                         if (arg_index == 1)
                             sort(str, str_index, NORMAL);
 
-                        backwards_sort(str, str_index);        
+                        reverse = 1;      
                         break;
                     case 'f':
                         sort(str, str_index, FOLD);
@@ -126,6 +124,8 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
+        if (reverse)
+            sort(str, str_index, BACKWARDS);
     }
 
     printf("\n");
