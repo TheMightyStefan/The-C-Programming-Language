@@ -5,6 +5,7 @@
 #define MAX_NUMBER_OF_STRINGS 40
 #define MAX_STRING_LENGTH 20
 #define MAX_FIELDS_NUMBER 40
+#define MAX_ARGS 30
 
 #define GOT_THE_LINE 1
 #define END_OF_INPUT 0
@@ -54,21 +55,6 @@ void create_lower(char str[], char temp[]) {
     }
 }
 
-void create_columns(char str[][MAX_STRING_LENGTH], char column[][MAX_STRING_LENGTH], int str_nr) {
-   int str_index = 0;
-
-   while (str_index != str_nr) {
-        int index;
-
-        for (index = 0; index < str_nr; index++)
-            if (str_index < strlen(str[index]))
-                column[str_index][index] = str[index][str_index];
-
-        if (index == str_nr)
-            str_index++;
-    }
-}
-
 void create_fields(char str[][MAX_STRING_LENGTH], char field[][MAX_FIELDS_NUMBER][MAX_STRING_LENGTH], int str_nr) {
     int str_index = 0;
     int field_index = 0;
@@ -94,22 +80,23 @@ void create_fields(char str[][MAX_STRING_LENGTH], char field[][MAX_FIELDS_NUMBER
                 field_index = 0;
                 field_str_index = 0;
                 str_index++;
+                index = 0;
             }
         }
     }
 }
        
 void sort(char str[][MAX_STRING_LENGTH], int str_nr, char arg, int field_number) {    
-    if (arg == BACKWARDS)
+    if (arg[0] == BACKWARDS)
         for (int index = 0; index < str_nr / 2; index++)
             swap(str[index], str[str_nr - index - 1]);
 
     for (int index_1 = 0; index_1 < str_nr; index_1++)
          for (int index_2 = 0; index_2 < str_nr - 1; index_2++) {
-            if (arg == NORMAL) {
+            if (arg[0] == NORMAL) {
                 if (strcmp(str[index_2], str[index_2 + 1]) > 0)
                     swap(str[index_2], str[index_2 + 1]);
-            } else if (arg == FOLD) {
+            } else if (arg[0] == FOLD) {
                 char lower[2][MAX_STRING_LENGTH];
 
                 create_lower(str[index_2], lower[0]);
@@ -117,7 +104,7 @@ void sort(char str[][MAX_STRING_LENGTH], int str_nr, char arg, int field_number)
 
                 if (strcmp(lower[0], lower[1]) > 0)
                     swap(str[index_2], str[index_2 + 1]);
-            } else if (arg == NUMERICAL) {
+            } else if (arg[0] == NUMERICAL) {
                 int num_index = 0;
 
                 for ( ; str[index_2][num_index] == str[index_2 + 1][num_index]; num_index++);
@@ -127,7 +114,7 @@ void sort(char str[][MAX_STRING_LENGTH], int str_nr, char arg, int field_number)
                         swap(str[index_2], str[index_2 + 1]);
                 } else if (strcmp(str[index_2], str[index_2 + 1]) > 0)
                     swap(str[index_2], str[index_2 + 1]);
-            } else if (arg == DIRECTORY) {
+            } else if (arg[0] == DIRECTORY) {
                 char temp[2][MAX_STRING_LENGTH];
 
                 create_dir_order(str[index_2], temp[0]);
@@ -135,15 +122,47 @@ void sort(char str[][MAX_STRING_LENGTH], int str_nr, char arg, int field_number)
 
                 if (strcmp(temp[0], temp[1]) > 0)
                     swap(str[index_2], str[index_2 + 1]);
-            } else if (arg == FIELD) {
-                char field[MAX_NUMBER_OF_STRINGS][MAX_FIELDS_NUMBER][MAX_STRING_LENGTH];
+            }
+        }
+            
+    if (arg[0] == FIELD) {
+        char field[MAX_NUMBER_OF_STRINGS][MAX_FIELDS_NUMBER][MAX_STRING_LENGTH];
 
-                create_fields(str, field, str_nr);
-                if (strcmp(field[index_2][field_number], field[index_2 + 1][field_number]) > 0)
-                swap(str[index_2], str[index_2 + 1]);
-            } else
-                printf("UNKNOWN ARGUMENT\n");
-        }        
+        create_fields(str, field, str_nr);
+
+        for (int index_1 = 0; index_1 < str_nr; index_1++)
+             for (int index_2 = 0; index_2 < str_nr - 1; index_2++)
+                if (arg[1] == NORMAL) {
+                    if (strcmp(field[index_2][field_number], field[index_2 + 1][field_number]) > 0)
+                        swap(str[index_2], str[index_2 + 1]);
+                } else if (arg[1] == DIRECTORY) {
+                    char temp[2][MAX_STRING_LENGTH];
+
+                    create_dir_order(field[index_2][field_number], temp[0]);
+                    create_dir_order(field[index_2 + 1][field_number]. temp[1]);
+
+                    if (strcmp(temp[0], temp[1]) > 0)
+                        swap(str[index_2], str[index_2 + 1]);
+                } else if (arg[1] == NUMERICAL) {
+                    int num_index = 0;
+
+                    for ( ; field[index_2][field_number][num_index] == field[index_2 + 1][field_number][num_index]; num_index++);
+
+                    if (isdigit(field[index_2][field_number][num_index]) && isdigit(field[index_2 + 1][field_number][num_index])) {
+                        if (getnumber(field[index_2][field_number], num_index - 1) > getnumber(field[index_2 + 1][field_number], num_index - 1))
+                            swap(str[index_2], str[index_2 + 1]);
+                    } else if (strcmp(field[index_2][field_number], field[index_2 + 1][field_number]) > 0)
+                        swap(str[index_2], str[index_2 + 1]);
+                } else if (arg[1] == FOLD) {
+                    char lower[2][MAX_STRING_LENGTH];
+
+                    create_lower(field[index_2][field_number], lower[0]);
+                    create_lower(field[index_2 + 1][field_number], lower[1]);
+
+                    if (strcmp(lower[0], lower[1]) > 0)
+                        swap(str[index_2], str[index_2 + 1]);
+                } else
+                    printf("UNKNOWN ARGUMENT\n");        
 }
 
 int getline(char str[]) {
@@ -171,29 +190,44 @@ int main(int argc, char *argv[]) {
     do
         str_index++;
     while (getline(str[str_index]) == GOT_THE_LINE && str_index < MAX_NUMBER_OF_STRINGS);
+    
+    char arg[MAX_ARGS];
 
-    if (argc == 1)
-        sort(str, str_index, NORMAL, 0);
-    else {
+    if (argc == 1) {
+        arg[0] = NORMAL;
+        sort(str, str_index, arg, 0);
+    } else if (argc == 3 && *(arg[arg_str_index] + 1) == 'd') {
+        arg[1] = NORMAL;
+        sort(str, str_index, arg, getnumber(argv[arg_index], 0));
+    } else {
         int reverse = 0;
 
         for (int arg_index = 1; arg_index < argc; arg_index++) {
             if (*argv[arg_index] == '-') {
+                int arg_str_index;
+                arg[0] = *(argv[arg_index] + 1);
+                
+                for (arg_str_index = 1; *(arg[arg_str_index]) != '\0'; index++) {
+                    arg[arg_str_index] = *(arg[arg_str_index]);
+                }
+
+                arg[arg_str_index + 1] = '\0';
+
                 switch(*(argv[arg_index] + 1)) {
                     case 'n': 
-                        sort(str, str_index, NUMERICAL, 0);
+                        sort(str, str_index, arg, 0);
                         break;     
                     case 'r':
                         if (arg_index == 1)
-                            sort(str, str_index, NORMAL, 0);
+                            sort(str, str_index, arg, 0);
 
                         reverse = 1;      
                         break;
                     case 'f':
-                        sort(str, str_index, FOLD, 0);
+                        sort(str, str_index, arg, 0);
                         break;
                     case 'd':
-                        sort(str, str_index, FIELD, *(argv[arg_index] + 2) - '0');
+                        sort(str, str_index, arg, getnumber(argv[arg_index], 0));
                         break;
                     default:
                         printf("INVALID ARGUMENT : %s", argv[arg_index]);
