@@ -110,12 +110,8 @@ void sort(char str[][MAX_STRING_LENGTH], int str_nr, int field_number) {
 
     create_fields(str, field, str_nr);
 
-    printf("\n");
-
     for (int index_1 = 0; index_1 < str_nr; index_1++)
         for (int index_2 = 0; index_2 < str_nr - 1; index_2++) {
-            printf("%s\n%s\n", field[index_2][field_number], field[index_2 + 1][field_number]);
-            printf("\n");
 
             if (strcmp(field[index_2][field_number], field[index_2 + 1][field_number]) > 0) {
                 if (swap_index == 0) {
@@ -127,9 +123,7 @@ void sort(char str[][MAX_STRING_LENGTH], int str_nr, int field_number) {
                     swap(str[index_2], str[index_2 + 1]);
                     swap(field[index_2][field_number], field[index_2 + 1][field_number]);
 
-                    printf("SWAPPED : %s --- %s\n", field[index_2][field_number], field[index_2 + 1][field_number]);
                 } else if (swap_checker(field[index_2][field_number], field[index_2 + 1][field_number], swap_index) == NOT_SWAPPED) {
-                    printf("SWAPPED : %s --- %s\n", field[index_2][field_number], field[index_2 + 1][field_number]);
                  
                     strcpy(swapped[swap_index].str_1, field[index_2][field_number]);
                     strcpy(swapped[swap_index].str_2, field[index_2 + 1][field_number]); 
