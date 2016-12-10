@@ -1,247 +1,329 @@
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 
-#define MAX_NUMBER_OF_STRINGS 40
-#define MAX_STRING_LENGTH 20
-#define MAX_FIELDS_NUMBER 40
-#define MAX_ARGS 30
+#define MAX_STRING_LENGTH 100
+#define ALLOC_SIZE 10000
+#define MAXLINES 5000
+#define MAXLEN 1000
 
-#define GOT_THE_LINE 1
-#define END_OF_INPUT 0
+char *lines[MAXLINES];
+int field_number;
 
-#define FOLD 'F'
-#define NORMAL 'N'
-#define BACKWARDS 'R'
-#define NUMERICAL 'n'
-#define DIRECTORY 'D'
-#define FIELD 'f'
+char *alloc(int size) {
+    static char alloc_buffer[ALLOC_SIZE];
+    static char *alloc_ptr = alloc_buffer;
 
-int getnumber(char str[], int index) {
-    for ( ; str[index] != '\0' && !isdigit(str[index]); index++);
+    if (alloc_buffer + ALLOC_SIZE - alloc_ptr >= size) {
+        alloc_ptr += size;
+        return alloc_ptr - size;
+    } else
+        return 0;
+}
+
+int get_number(char string[MAXLEN], int index) {
+    for ( ; string[index] != '\0' && !isdigit(string[index]); index++);
 
     int number = 0;
 
-    while (isdigit(str[index]))
-        number = 10 * number + (str[index++] - '0');
+    while (isdigit(string[index]))
+        number = 10 * number + (string[index++] - '0');
 
     return number;
 }
 
-void swap(char **str_1, char **str_2) {
-    char *temp;
+int get_line(char line[MAXLEN]) {
+    int character = getchar();
+    int index;
 
-    temp = *str_1;
-    *str_1 = *str_2;
-    *str_2 = temp;
-}
-
-void create_dir_order(char str[], char temp[]) {
-    int temp_index = 0;
-
-    for (int index = 0; str[index] != '\0'; index++)
-        if (isspace(str[index]) || isdigit(str[index]) || isalpha(str[index]))
-            temp[temp_index++] = str[index];
-
-    temp[temp_index] = '\0';
-}
-
-void create_lower(char str[], char temp[]) {
-    for (int index = 0; str[index] != '\0'; index++) {
-        if (isupper(str[index]))
-            temp[index] = str[index] + 32;
- 
-            temp[index] = str[index];
+    for (index = 0; index < MAXLEN - 1 && character != EOF && character != '\n'; index++) {
+        line[index] = character;
+        character = getchar();
     }
+    
+    if (character == '\n')
+        line[index++] = character;
+
+    line[index] = '\0';
+
+    return index;
 }
 
-void create_fields(char str[][MAX_STRING_LENGTH], char field[][MAX_FIELDS_NUMBER][MAX_STRING_LENGTH], int str_nr) {
-    int str_index = 0;
-    int field_index = 0;
-    int field_str_index = 0;
+int read_lines(char *lines_ptr[MAXLINES]) {
+    char *position_ptr; 
+    char line[MAXLEN];
+    int length = get_line(line);
+    int lines_number = 0;
 
-    while (str_index < str_nr) {
+    while (length > 0) {
+        if (lines_number >= MAXLINES || (position_ptr = alloc(length)) == NULL)
+            return -1;
+        else {
+            line[length - 1] = '\0';
+            strcpy(position_ptr, line);
+            lines_ptr[lines_number++] = position_ptr;
+        }
+
+        length = get_line(line);
+    }
+
+    return lines_number;
+}
+
+void write_lines(char *lines_ptr[MAXLINES], int lines_number) {
+    printf("\n");
+
+    for (int index = 0; index < lines_number; index++)
+        printf("%s\n", lines_ptr[index]);
+}
+
+void swap(void *lines[MAXLINES], int line_1, int line_2) {
+    void *temp;
+
+    temp = lines[line_1];
+    lines[line_1] = lines[line_2];
+    lines[line_2] = temp;
+}
+
+void get_field(char line[MAXLEN], char field[MAXLEN], int field_number) {
+        int field_number_index = 0;
         int index = 0;
+        int field_index = 0;
 
-        for ( ; isspace(str[str_index][index]); index++);
-
-        while (index < strlen(str[str_index])) {
-            if (!isspace(str[str_index][index]))
-                field[str_index][field_str_index][field_index++] = str[str_index][index++];
-            else if (isspace(str[str_index][index])) {
-                field[str_index][field_str_index][field_index] = '\0';
-                field_index = 0;
-                field_str_index++;
-                index++;
+        while (field_number_index < field_number && line[index] != '\0' && line[index] != '\n' && line[index] != EOF) { 
+            if (isspace(line[index]))
+                field_number_index++;
+        
+            index++;
         }
 
-            if (str[str_index][index] == '\0') {
-                field[str_index][field_str_index][field_index] = '\0';
-                field_index = 0;
-                field_str_index = 0;
-                str_index++;
-                index = 0;
-            }
-        }
-    }
-}
+        if (line[index] == '\0')
+            field[0] = '\0';
+        else { 
+            field[field_index++] = line[index++];
        
-void sort(char str[][MAX_STRING_LENGTH], int str_nr, char arg, int field_number) {    
-    if (arg[0] == BACKWARDS)
-        for (int index = 0; index < str_nr / 2; index++)
-            swap(str[index], str[str_nr - index - 1]);
+            while (line[index] != ' ' && line[index] != '\t' && line[index] != '\0') 
+                field[field_index++] = line[index++];
 
-    for (int index_1 = 0; index_1 < str_nr; index_1++)
-         for (int index_2 = 0; index_2 < str_nr - 1; index_2++) {
-            if (arg[0] == NORMAL) {
-                if (strcmp(str[index_2], str[index_2 + 1]) > 0)
-                    swap(str[index_2], str[index_2 + 1]);
-            } else if (arg[0] == FOLD) {
-                char lower[2][MAX_STRING_LENGTH];
-
-                create_lower(str[index_2], lower[0]);
-                create_lower(str[index_2 + 1], lower[1]);
-
-                if (strcmp(lower[0], lower[1]) > 0)
-                    swap(str[index_2], str[index_2 + 1]);
-            } else if (arg[0] == NUMERICAL) {
-                int num_index = 0;
-
-                for ( ; str[index_2][num_index] == str[index_2 + 1][num_index]; num_index++);
-
-                if (isdigit(str[index_2][num_index]) && isdigit(str[index_2 + 1][num_index])) {
-                    if (getnumber(str[index_2], num_index - 1) > getnumber(str[index_2 + 1], num_index - 1))
-                        swap(str[index_2], str[index_2 + 1]);
-                } else if (strcmp(str[index_2], str[index_2 + 1]) > 0)
-                    swap(str[index_2], str[index_2 + 1]);
-            } else if (arg[0] == DIRECTORY) {
-                char temp[2][MAX_STRING_LENGTH];
-
-                create_dir_order(str[index_2], temp[0]);
-                create_dir_order(str[index_2 + 1], temp[1]);
-
-                if (strcmp(temp[0], temp[1]) > 0)
-                    swap(str[index_2], str[index_2 + 1]);
-            }
+            field[field_index] = '\0';
         }
-            
-    if (arg[0] == FIELD) {
-        char field[MAX_NUMBER_OF_STRINGS][MAX_FIELDS_NUMBER][MAX_STRING_LENGTH];
-
-        create_fields(str, field, str_nr);
-
-        for (int index_1 = 0; index_1 < str_nr; index_1++)
-             for (int index_2 = 0; index_2 < str_nr - 1; index_2++)
-                if (arg[1] == NORMAL) {
-                    if (strcmp(field[index_2][field_number], field[index_2 + 1][field_number]) > 0)
-                        swap(str[index_2], str[index_2 + 1]);
-                } else if (arg[1] == DIRECTORY) {
-                    char temp[2][MAX_STRING_LENGTH];
-
-                    create_dir_order(field[index_2][field_number], temp[0]);
-                    create_dir_order(field[index_2 + 1][field_number]. temp[1]);
-
-                    if (strcmp(temp[0], temp[1]) > 0)
-                        swap(str[index_2], str[index_2 + 1]);
-                } else if (arg[1] == NUMERICAL) {
-                    int num_index = 0;
-
-                    for ( ; field[index_2][field_number][num_index] == field[index_2 + 1][field_number][num_index]; num_index++);
-
-                    if (isdigit(field[index_2][field_number][num_index]) && isdigit(field[index_2 + 1][field_number][num_index])) {
-                        if (getnumber(field[index_2][field_number], num_index - 1) > getnumber(field[index_2 + 1][field_number], num_index - 1))
-                            swap(str[index_2], str[index_2 + 1]);
-                    } else if (strcmp(field[index_2][field_number], field[index_2 + 1][field_number]) > 0)
-                        swap(str[index_2], str[index_2 + 1]);
-                } else if (arg[1] == FOLD) {
-                    char lower[2][MAX_STRING_LENGTH];
-
-                    create_lower(field[index_2][field_number], lower[0]);
-                    create_lower(field[index_2 + 1][field_number], lower[1]);
-
-                    if (strcmp(lower[0], lower[1]) > 0)
-                        swap(str[index_2], str[index_2 + 1]);
-                } else
-                    printf("UNKNOWN ARGUMENT\n");        
 }
 
-int getline(char str[]) {
-    int index = -1;    
+void create_lower(char string[MAXLEN], char lower[MAXLEN]) {
+    int index; 
 
-    do
-        str[++index] = getchar();
-    while (str[index] != EOF && str[index] != '\n' && index < MAX_STRING_LENGTH);
+    for (index = 0; index < strlen(string); index++) {
+        if (isupper(string[index]))
+            lower[index] = string[index] + 32;
+        else
+            lower[index] = string[index];
+    }
+    
+    lower[++index] = '\0';
+}
+     
+void create_dir(char string[MAXLEN], char directory[MAXLEN]) {
+    int directory_index = 0;
 
-    if (str[index] == EOF) {
-        str[index] = '\0';
-        return END_OF_INPUT;
-    } else if (str[index] == '\n')
-        str[index] = '\0';
+    for (int index = 0; string[index] != '\0'; index++)
+        if (isspace(string[index]) || isdigit(string[index]) || isalpha(string[index]))
+            directory[directory_index++] = string[index];
+
+    directory[directory_index] = '\0';
+}
+
+int numcmp(char string_1[MAXLEN], char string_2[MAXLEN]) { 
+    if (atof(string_1) < atof(string_2))
+        return -1;
+    else if (atof(string_1) > atof(string_2))
+        return 1;
     else
-        printf("GETLINE ERROR\n");
+        return 0;
+}
 
-    return GOT_THE_LINE;
+int foldcmp(char string_1[MAXLEN], char string_2[MAXLEN]) {
+    char fold_1[MAXLEN];
+    char fold_2[MAXLEN];
+
+    create_lower(string_1, fold_1);
+    create_lower(string_2, fold_2);
+
+    if (strcmp(fold_1, fold_2) < 0)
+        return -1;
+    else if (strcmp(fold_1, fold_2) > 0)
+        return 1;
+    else
+        return 0;
+}
+
+int dircmp(char string_1[MAXLEN], char string_2[MAXLEN]) {
+    char dir_1[MAXLEN];
+    char dir_2[MAXLEN];
+
+    create_dir(string_1, dir_1);
+    create_dir(string_2, dir_2); 
+
+    if (strcmp(dir_1, dir_2) < 0)
+        return -1;
+    else if (strcmp(dir_1, dir_2) > 0)
+        return 1;
+    else
+        return 0;
+} 
+
+int field_strcmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
+    char field_1[MAXLEN];
+    char field_2[MAXLEN];
+
+    get_field(line_1, field_1, field_number);
+    get_field(line_2, field_2, field_number);
+
+    if (strcmp(field_1, field_2) < 0)
+        return -1;
+    else if (strcmp(field_1, field_2) > 0)
+        return 1;
+    else
+        return 0;
+}
+
+int field_numcmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
+    char field_1[MAXLEN];
+    char field_2[MAXLEN];
+
+    get_field(line_1, field_1, field_number);
+    get_field(line_2, field_2, field_number);
+
+    if (atof(field_1) < atof(field_2))
+        return -1;
+    else if (atof(field_1) > atof(field_2))
+        return 1;
+    else
+        return 0;
+}
+
+int field_foldcmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
+    char field_1[MAXLEN];
+    char field_2[MAXLEN];
+
+    get_field(line_1, field_1, field_number);
+    get_field(line_1, field_1, field_number);
+
+    char fold_1[MAXLEN];
+    char fold_2[MAXLEN];
+
+    create_lower(field_1, fold_1);
+    create_lower(field_2, fold_2);
+
+    if (strcmp(fold_1, fold_2) < 0)
+        return -1;
+    else if (strcmp(fold_1, fold_2) > 0)
+        return 0;
+    else
+        return 0;
+}  
+
+int field_dircmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
+    char field_1[MAXLEN];
+    char field_2[MAXLEN];
+
+    get_field(line_1, field_1, field_number);
+    get_field(line_2, field_2, field_number);
+        
+    char dir_1[MAXLEN];
+    char dir_2[MAXLEN];
+
+    create_dir(field_1, dir_1);
+    create_dir(field_2, dir_2);
+
+    if (strcmp(dir_1, dir_2) < 0)
+        return -1;
+    else if (strcmp(dir_1, dir_2) > 0)
+        return 1;
+    else
+        return 0;
+}
+
+void sort_lines(void *lines[MAXLINES], int left, int right, int (*comp)(void *, void *)) {
+    int last;
+
+    if (left >= right)
+        return;
+
+    swap(lines, left, (left + right) / 2);
+    
+    last = left;
+
+    for (int index = left + 1; index <= right; index++)
+        if ((*comp)(lines[index], lines[left]) < 0)
+            swap(lines, ++last, index);
+    
+    swap(lines, left, last);
+    sort_lines(lines, left, last - 1, comp);
+    sort_lines(lines, last + 1, right, comp);
 }
 
 int main(int argc, char *argv[]) {
-    char str[MAX_NUMBER_OF_STRINGS][MAX_STRING_LENGTH];
-    int str_index = -1;
+    int lines_number = read_lines(lines);
 
-    do
-        str_index++;
-    while (getline(str[str_index]) == GOT_THE_LINE && str_index < MAX_NUMBER_OF_STRINGS);
-    
-    char arg[MAX_ARGS];
-
-    if (argc == 1) {
-        arg[0] = NORMAL;
-        sort(str, str_index, arg, 0);
-    } else if (argc == 3 && *(arg[arg_str_index] + 1) == 'd') {
-        arg[1] = NORMAL;
-        sort(str, str_index, arg, getnumber(argv[arg_index], 0));
-    } else {
+    if (argc == 1)
+        sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(strcmp)); 
+    else {
         int reverse = 0;
 
         for (int arg_index = 1; arg_index < argc; arg_index++) {
             if (*argv[arg_index] == '-') {
-                int arg_str_index;
-                arg[0] = *(argv[arg_index] + 1);
-                
-                for (arg_str_index = 1; *(arg[arg_str_index]) != '\0'; index++) {
-                    arg[arg_str_index] = *(arg[arg_str_index]);
-                }
-
-                arg[arg_str_index + 1] = '\0';
-
                 switch(*(argv[arg_index] + 1)) {
-                    case 'n': 
-                        sort(str, str_index, arg, 0);
-                        break;     
-                    case 'r':
-                        if (arg_index == 1)
-                            sort(str, str_index, arg, 0);
-
-                        reverse = 1;      
+                    case 'n':
+                        sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(numcmp));
                         break;
                     case 'f':
-                        sort(str, str_index, arg, 0);
-                        break;
+                        sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(foldcmp));
+                        break; 
                     case 'd':
-                        sort(str, str_index, arg, getnumber(argv[arg_index], 0));
+                        sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(dircmp));
                         break;
-                    default:
+                    case 'r':
+                        reverse = 1;
+                        break;
+                    case 'D':
+                        field_number = get_number(argv[arg_index], 0);
+
+                        if (isdigit(*(argv[arg_index] + 2)))
+                            sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(field_strcmp));
+                        else {
+                            switch(*(argv[arg_index] + 2)) {
+                                case 'N':
+                                    sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(field_numcmp));
+                                    break;
+                                case 'F':
+                                    sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(field_foldcmp));
+                                    break; 
+                                case 'D':
+                                    sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(field_dircmp));
+                                    break;
+                                case 'R':
+                                    sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(field_strcmp));
+
+                                    reverse = 1;
+                                    break;
+                                default:
+                                    printf("INVALID ARGUMENT %s", argv[arg_index]);
+                            }
+                        }
+                        break;
+                    default: 
                         printf("INVALID ARGUMENT : %s", argv[arg_index]);
                 }
             }
         }
+
         if (reverse)
-            sort(str, str_index, BACKWARDS, 0);
+            for (int reverse_index = 0; reverse_index < lines_number / 2; reverse_index++)
+                swap((void **) lines, reverse_index, lines_number - reverse_index - 1);
     }
 
-    printf("\n");
-
-    for (int index = 0; index < str_index; index++)
-        printf("%s\n", str[index]);
+    write_lines(lines, lines_number);
 
     return 0;
-} 
+}
