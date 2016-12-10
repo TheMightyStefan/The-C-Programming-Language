@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define MAX_STRING_LENGTH 100
 #define ALLOC_SIZE 10000
 #define MAXLINES 5000
 #define MAXLEN 1000
