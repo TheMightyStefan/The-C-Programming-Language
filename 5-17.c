@@ -93,7 +93,8 @@ void get_field(char line[MAXLEN], char field[MAXLEN], int field_number) {
         while (field_number_index < field_number && line[index] != '\0' && line[index] != '\n' && line[index] != EOF) { 
             if (isspace(line[index]))
                 field_number_index++;
-        
+    
+ 
             index++;
         }
 
@@ -110,16 +111,16 @@ void get_field(char line[MAXLEN], char field[MAXLEN], int field_number) {
 }
 
 void create_lower(char string[MAXLEN], char lower[MAXLEN]) {
-    int index; 
+    int index = 0; 
 
-    for (index = 0; index < strlen(string); index++) {
+    for ( ; index < strlen(string); index++) {
         if (isupper(string[index]))
             lower[index] = string[index] + 32;
         else
             lower[index] = string[index];
     }
     
-    lower[++index] = '\0';
+    lower[index] = '\0';
 }
      
 void create_dir(char string[MAXLEN], char directory[MAXLEN]) {
@@ -133,9 +134,9 @@ void create_dir(char string[MAXLEN], char directory[MAXLEN]) {
 }
 
 int numcmp(char string_1[MAXLEN], char string_2[MAXLEN]) { 
-    if (atof(string_1) < atof(string_2))
+    if (atoi(string_1) < atoi(string_2))
         return -1;
-    else if (atof(string_1) > atof(string_2))
+    else if (atoi(string_1) > atoi(string_2))
         return 1;
     else
         return 0;
@@ -193,9 +194,9 @@ int field_numcmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
     get_field(line_1, field_1, field_number);
     get_field(line_2, field_2, field_number);
 
-    if (atof(field_1) < atof(field_2))
+    if (atoi(field_1) < atoi(field_2))
         return -1;
-    else if (atof(field_1) > atof(field_2))
+    else if (atoi(field_1) > atoi(field_2))
         return 1;
     else
         return 0;
@@ -207,6 +208,8 @@ int field_foldcmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
 
     get_field(line_1, field_1, field_number);
     get_field(line_1, field_1, field_number);
+
+    printf("\nFIELDS : \n%s\n%s", field_1, field_2);
 
     char fold_1[MAXLEN];
     char fold_2[MAXLEN];
