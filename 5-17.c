@@ -91,16 +91,17 @@ void get_field(char line[MAXLEN], char field[MAXLEN], int field_number) {
         int field_index = 0;
 
         while (field_number_index < field_number && line[index] != '\0' && line[index] != '\n' && line[index] != EOF) { 
-            if (isspace(line[index]))
+            if (isspace(line[index])) {
                 field_number_index++;
-    
- 
-            index++;
-        }
 
-        if (line[index] == '\0')
-            field[0] = '\0';
-        else { 
+                for ( ; isspace(line[index]); index++);
+            } else
+                index++;
+        }
+ 
+        if (field_number_index != field_number) {
+            field[0] = '\0'; 
+        } else { 
             field[field_index++] = line[index++];
        
             while (line[index] != ' ' && line[index] != '\t' && line[index] != '\0') 
@@ -120,7 +121,7 @@ void create_lower(char string[MAXLEN], char lower[MAXLEN]) {
             lower[index] = string[index];
     }
     
-    lower[index] = '\0';
+    lower[++index] = '\0';
 }
      
 void create_dir(char string[MAXLEN], char directory[MAXLEN]) {
@@ -207,15 +208,15 @@ int field_foldcmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
     char field_2[MAXLEN];
 
     get_field(line_1, field_1, field_number);
-    get_field(line_1, field_1, field_number);
-
-    printf("\nFIELDS : \n%s\n%s", field_1, field_2);
+    get_field(line_2, field_2, field_number);
 
     char fold_1[MAXLEN];
     char fold_2[MAXLEN];
 
     create_lower(field_1, fold_1);
     create_lower(field_2, fold_2);
+
+    printf("LOWERS : %s\n%s\n", fold_1, fold_2);
 
     if (strcmp(fold_1, fold_2) < 0)
         return -1;
