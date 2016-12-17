@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#define ASCII_LOWER 32
 #define ALLOC_SIZE 10000
 #define MAXLINES 5000
 #define MAXLEN 1000
@@ -85,7 +86,7 @@ void swap(void *lines[MAXLINES], int line_1, int line_2) {
     lines[line_2] = temp;
 }
 
-void get_field(char line[MAXLEN], char field[MAXLEN], int field_number) {
+void get_field(char field[MAXLEN], char line[MAXLEN], int field_number) {
         int field_number_index = 0;
         int index = 0;
         int field_index = 0;
@@ -111,12 +112,12 @@ void get_field(char line[MAXLEN], char field[MAXLEN], int field_number) {
         }
 }
 
-void create_lower(char string[MAXLEN], char lower[MAXLEN]) {
+void create_lower(char lower[MAXLEN], char string[MAXLEN]) {
     int index = 0; 
 
     for ( ; index < strlen(string); index++) {
         if (isupper(string[index]))
-            lower[index] = string[index] + 32;
+            lower[index] = string[index] + ASCII_LOWER;
         else
             lower[index] = string[index];
     }
@@ -124,7 +125,7 @@ void create_lower(char string[MAXLEN], char lower[MAXLEN]) {
     lower[++index] = '\0';
 }
      
-void create_dir(char string[MAXLEN], char directory[MAXLEN]) {
+void create_dir(char directory[MAXLEN], char string[MAXLEN]) {
     int directory_index = 0;
 
     for (int index = 0; string[index] != '\0'; index++)
@@ -147,8 +148,8 @@ int foldcmp(char string_1[MAXLEN], char string_2[MAXLEN]) {
     char fold_1[MAXLEN];
     char fold_2[MAXLEN];
 
-    create_lower(string_1, fold_1);
-    create_lower(string_2, fold_2);
+    create_lower(fold_1, string_1);
+    create_lower(fold_2, string_2);
 
     if (strcmp(fold_1, fold_2) < 0)
         return -1;
@@ -162,8 +163,8 @@ int dircmp(char string_1[MAXLEN], char string_2[MAXLEN]) {
     char dir_1[MAXLEN];
     char dir_2[MAXLEN];
 
-    create_dir(string_1, dir_1);
-    create_dir(string_2, dir_2); 
+    create_dir(dir_1, string_1);
+    create_dir(dir_2, string_2); 
 
     if (strcmp(dir_1, dir_2) < 0)
         return -1;
@@ -177,8 +178,8 @@ int field_strcmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
     char field_1[MAXLEN];
     char field_2[MAXLEN];
 
-    get_field(line_1, field_1, field_number);
-    get_field(line_2, field_2, field_number);
+    get_field(field_1, line_1, field_number);
+    get_field(field_2, line_2, field_number);
 
     if (strcmp(field_1, field_2) < 0)
         return -1;
@@ -192,8 +193,8 @@ int field_numcmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
     char field_1[MAXLEN];
     char field_2[MAXLEN];
 
-    get_field(line_1, field_1, field_number);
-    get_field(line_2, field_2, field_number);
+    get_field(field_1, line_1, field_number);
+    get_field(field_2, line_2, field_number);
 
     if (atoi(field_1) < atoi(field_2))
         return -1;
@@ -207,16 +208,14 @@ int field_foldcmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
     char field_1[MAXLEN];
     char field_2[MAXLEN];
 
-    get_field(line_1, field_1, field_number);
-    get_field(line_2, field_2, field_number);
+    get_field(field_1, line_1, field_number);
+    get_field(field_2, line_2, field_number);
 
     char fold_1[MAXLEN];
     char fold_2[MAXLEN];
 
-    create_lower(field_1, fold_1);
-    create_lower(field_2, fold_2);
-
-    printf("LOWERS : %s\n%s\n", fold_1, fold_2);
+    create_lower(fold_1, field_1);
+    create_lower(fold_2, field_2);
 
     if (strcmp(fold_1, fold_2) < 0)
         return -1;
@@ -230,14 +229,14 @@ int field_dircmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
     char field_1[MAXLEN];
     char field_2[MAXLEN];
 
-    get_field(line_1, field_1, field_number);
-    get_field(line_2, field_2, field_number);
+    get_field(field_1, line_1, field_number);
+    get_field(field_2, line_2, field_number);
         
     char dir_1[MAXLEN];
     char dir_2[MAXLEN];
 
-    create_dir(field_1, dir_1);
-    create_dir(field_2, dir_2);
+    create_dir(dir_1, field_1);
+    create_dir(dir_2, field_2);
 
     if (strcmp(dir_1, dir_2) < 0)
         return -1;
