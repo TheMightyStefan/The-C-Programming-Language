@@ -246,30 +246,19 @@ int field_dircmp(char line_1[MAXLEN], char line_2[MAXLEN]) {
         return 0;
 }
 
-void sort_lines(void *lines[MAXLINES], int left, int right, int (*comp)(void *, void *)) {
-    int last;
-
-    if (left >= right)
-        return;
-
-    swap(lines, left, (left + right) / 2);
-    
-    last = left;
-
-    for (int index = left + 1; index <= right; index++)
-        if ((*comp)(lines[index], lines[left]) < 0)
-            swap(lines, ++last, index);
-    
-    swap(lines, left, last);
-    sort_lines(lines, left, last - 1, comp);
-    sort_lines(lines, last + 1, right, comp);
+void sort_lines(void *lines[MAXLINES], int lines_number, int (*comp)(void *, void *)) {
+    for (int bubble_index_1 = 0; bubble_index_1 < lines_number - 1; bubble_index_1++)
+        for (int bubble_index_2 = 0; bubble_index_2 < lines_number - bubble_index_1 - 1; bubble_index_2++) {
+            if ((*comp)(lines[bubble_index_2 + 1], lines[bubble_index_2]) < 0)
+                swap(lines, bubble_index_2, bubble_index_2 + 1);
+        }
 }
 
 int main(int argc, char *argv[]) {
     int lines_number = read_lines(lines);
 
     if (argc == 1)
-        sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(strcmp)); 
+        sort_lines((void **) lines, lines_number, (int (*)(void *, void *))(strcmp)); 
     else {
         int reverse = 0;
 
@@ -277,13 +266,13 @@ int main(int argc, char *argv[]) {
             if (*argv[arg_index] == '-') {
                 switch(*(argv[arg_index] + 1)) {
                     case 'n':
-                        sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(numcmp));
+                        sort_lines((void **) lines, lines_number, (int (*)(void *, void *))(numcmp));
                         break;
                     case 'f':
-                        sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(foldcmp));
+                        sort_lines((void **) lines, lines_number, (int (*)(void *, void *))(foldcmp));
                         break; 
                     case 'd':
-                        sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(dircmp));
+                        sort_lines((void **) lines, lines_number, (int (*)(void *, void *))(dircmp));
                         break;
                     case 'r':
                         reverse = 1;
@@ -292,20 +281,20 @@ int main(int argc, char *argv[]) {
                         field_number = get_number(argv[arg_index], 0);
 
                         if (isdigit(*(argv[arg_index] + 2)))
-                            sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(field_strcmp));
+                            sort_lines((void **) lines, lines_number, (int (*)(void *, void *))(field_strcmp));
                         else {
                             switch(*(argv[arg_index] + 2)) {
                                 case 'N':
-                                    sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(field_numcmp));
+                                    sort_lines((void **) lines, lines_number, (int (*)(void *, void *))(field_numcmp));
                                     break;
                                 case 'F':
-                                    sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(field_foldcmp));
+                                    sort_lines((void **) lines, lines_number, (int (*)(void *, void *))(field_foldcmp));
                                     break; 
                                 case 'D':
-                                    sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(field_dircmp));
+                                    sort_lines((void **) lines, lines_number, (int (*)(void *, void *))(field_dircmp));
                                     break;
                                 case 'R':
-                                    sort_lines((void **) lines, 0, lines_number - 1, (int (*)(void *, void *))(field_strcmp));
+                                    sort_lines((void **) lines, lines_number, (int (*)(void *, void *))(field_strcmp));
 
                                     reverse = 1;
                                     break;
