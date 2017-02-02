@@ -92,25 +92,32 @@ char *string_duplicate(char *string) {
     return ptr;
 }
 
-int max_count = 1;
+int addtree(struct tnode **ptr, char *word) {
+    int max_count = 1;
 
-struct tnode *addtree(struct tnode *ptr, char *word) {
-    if (ptr == NULL) {
-        ptr = talloc();
-        ptr->word = string_duplicate(word);
-        ptr->count = 1;
-        ptr->left = ptr->right = NULL;
-    } else if (strcmp(word, ptr->word) == 0) {
-        ptr->count++;
+    if (*ptr == NULL) {
+        *ptr = talloc();
+        (*ptr)->word = string_duplicate(word);
+        (*ptr)->count = 1;
+        (*ptr)->left = (*ptr)->right = NULL;
+    } else if (strcmp(word, (*ptr)->word) == 0) {
+        (*ptr)->count++;
 
-        if (ptr->count > max_count)
-            max_count = ptr->count;
-    } else if (strcmp(word, ptr->word) < 0)
-        ptr->left = addtree(ptr->left, word);
-    else
-        ptr->right = addtree(ptr->right, word);
-    
-    return ptr;
+        if ((*ptr)->count > max_count)
+            max_count = (*ptr)->count;
+    } else if (strcmp(word, (*ptr)->word) < 0) {
+        int count = addtree(&(*ptr)->left, word);
+
+        if (count > max_count)
+            max_count = count;
+    } else {
+        int count = addtree(&(*ptr)->right, word);
+
+        if (count > max_count)
+            max_count = count;
+    }
+
+    return max_count;
 }
  
 void treeprint(struct tnode *ptr, int count) {
@@ -127,12 +134,18 @@ void treeprint(struct tnode *ptr, int count) {
 int main() {
     struct tnode *root;
     char word[MAX_WORDS];
+    int max_count;
+
 
     root = NULL;
     while (get_word(word, MAX_WORDS) != EOF)
-        if (isalpha(word[0]))
-            root = addtree(root, word);
-    
+        if (isalpha(word[0])) {
+            int count = addtree(&root, word);
+
+            if (count > max_count)
+                max_count = count;
+        }
+
     while (max_count) {
         treeprint(root, max_count);
         max_count--;
