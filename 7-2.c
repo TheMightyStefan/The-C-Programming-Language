@@ -19,14 +19,13 @@ int main() {
 
     if (character != EOF) {
         do {
-            if (iscntrl(character) || character == ' ') {
+            if (!isgraph(character)) {
                 position = increment(position, HEXADECIMAL);
 
                 printf("\\%03x", character);
-
-                if (character == '\n')
-                    position = 0;
-
+            } else if (character == '\n') {
+                position = 0;
+    
                 printf("\n");
             } else {
                 position = increment(position, 1);
