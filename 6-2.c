@@ -49,12 +49,9 @@ int get_word(char *word, int limit) {
                     unget_character(temp_character);
             } else
                 unget_character(character);
-        } else 
+        } else if (character != '(' && character != '*' && character != '[' && character != '!' && character != '&' && character != '-' && character != '+') 
             for ( ; !isspace(character) && character != EOF; character = get_character());
 
-        if (character != '\"' && character != '\n' && character != '/')
-            unget_character(character);
-    
         *word_ptr = '\0';
         return character; 
     }
@@ -62,7 +59,7 @@ int get_word(char *word, int limit) {
     for ( ; --limit > 0; ) {
         char check_character = get_character();
 
-        if (!isalnum(check_character)) {
+        if (!isalnum(check_character) && check_character != '_') {
             if (!isspace(check_character)) {
                 unget_character(check_character);
                 return check_character;
