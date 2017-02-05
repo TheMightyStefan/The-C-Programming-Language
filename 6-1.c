@@ -123,8 +123,6 @@ int main() {
 
     while (get_word(word, MAXWORDS) != EOF) {
         if (isalpha(word[0])) {
-            printf("%s\n", word);
-
             if ((n = binary_search(word, keytab, NKEYS)) >= 0)
                 keytab[n].count++;
 
