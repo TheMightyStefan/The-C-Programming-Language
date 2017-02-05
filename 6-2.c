@@ -7,7 +7,7 @@
 #define BUFFER_SIZE 100000
 #define KEY_WORDS 18
 #define MAX_LENGTH 10000
-#define LETTERS 3
+#define LETTERS 2
 
 int buffer_index = 0;
 char buffer[BUFFER_SIZE];
