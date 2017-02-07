@@ -24,14 +24,14 @@ int get_character() {
         return getchar();
 }
 
-int get_word(char *word, int limit) {
+int get_word(char *word, int limit) {   
     char *word_ptr = word;
     char character;
     char temp_character;
  
     while (isspace(character = get_character()));
 
-    if (character != EOF)
+    if (character != EOF && isalnum(character))
         *word_ptr++ = character;
 
     if (!isalpha(character)) {
@@ -57,20 +57,75 @@ int get_word(char *word, int limit) {
         return character; 
     }
 
-    for ( ; --limit > 0; word_ptr++)
-        if (!isalnum(*word_ptr = get_character())) {
-            if (!isspace(*word_ptr)) {
-                unget_character(*word_ptr);
-                return (*word_ptr);      
+    for ( ; --limit > 0; ) {
+        char check_character = get_character();
+
+        if (!isalnum(check_character)) {
+            if (!isspace(check_character)) {
+                unget_character(check_character);
+                return check_character;
             } else {
-                unget_character(*word_ptr);
+                unget_character(check_character);
                 break;
             }
-        }
-
+        } else
+            *word_ptr++ = check_character;
+    }
+    
     *word_ptr = '\0';
     return word[0];
 }
+
+int main() {
+    char *word_ptr = word;
+    char character;
+    char temp_character;
+ 
+    while (isspace(character = get_character()));
+
+    if (character != EOF && isalnum(character))
+        *word_ptr++ = character;
+
+    if (!isalpha(character)) {
+        if (character == '\"')
+            for (character = get_character(); character != '\"'; character = get_character());
+        else if (character == '#')
+            for (character = get_character(); character != '\n'; character = get_character());
+        else if (character == '/') {
+            if ((character = get_character()) == '/')
+                for (character = get_character(); character != '\n'; character = get_character());
+            else if (character == '*') {
+                for (character = get_character(), temp_character = get_character(); character != '*' && temp_character != '/'; character = get_character(), temp_character = get_character())
+                    unget_character(temp_character);
+            } else
+                unget_character(character);
+        } else 
+            for ( ; !isspace(character) && character != EOF; character = get_character());
+
+        if (character != '\"' && character != '\n' && character != '/')
+            unget_character(character);
+    
+        *word_ptr = '\0';
+        return character; 
+    }
+
+    for ( ; --limit > 0; ) {
+        char check_character = get_character();
+
+        if (!isalnum(check_character)) {
+            if (!isspace(check_character)) {
+                unget_character(check_character);
+                return check_character;
+            } else {
+                unget_character(check_character);
+                break;
+            }
+        } else
+            *word_ptr++ = check_character;
+    }
+    
+    *word_ptr = '\0';
+    return word[0];
 
 struct key {
     char *word;
@@ -116,12 +171,7 @@ int main() {
 
     while (get_word(word, MAXWORDS) != EOF)
         if (isalpha(word[0]))
-            if ((n = binary_search(word, keytab, NKEYS)) >= 0)
-                keytab[n].count++;
-    
-    for (n = 0; n < NKEYS; n++)
-        if (keytab[n].count > 0)
-            printf("%4d %s\n", keytab[n].count, keytab[n].word);
+            printf("%s\n", word);
 
     return 0;
 }
