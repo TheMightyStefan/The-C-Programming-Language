@@ -7,7 +7,7 @@
 #define BUFFER_SIZE 100000
 #define KEY_WORDS 18
 #define MAX_LENGTH 10000
-#define LETTERS 6
+#define LETTERS 3
 
 int buffer_index = 0;
 char buffer[BUFFER_SIZE];
@@ -77,6 +77,7 @@ int get_word(char *word, int limit) {
     *word_ptr = '\0';
     return word[0];
 }
+
 struct tnode {
     char *word;
     int count;
@@ -180,17 +181,25 @@ void treeprint(struct tnode *ptr, char group[MAX_LENGTH]) {
     }
 }
 
+void clear_string(char string[MAX_LENGTH]) {
+    for (int index = strlen(string); index > 0; index--)
+        string[index] = 0;
+}
+
 int main() {
     struct tnode *root;
     char word[MAX_WORDS];
 
     root = NULL;
     while (get_word(word, MAX_WORDS) != EOF)
-        if (isalpha(word[0]))
+        if (isalpha(word[0])) {
             if (!key_word(word)) {
                 add_group(word);
                 addtree(&root, word);
             }
+        
+            clear_string(word);
+        }
   
     printf("\n");
   
