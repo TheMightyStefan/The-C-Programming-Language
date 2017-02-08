@@ -3,9 +3,9 @@
 #include <ctype.h>
 #include <string.h>
 
-#define MAX_WORDS 100
-#define BUFFER_SIZE 100
-#define MAX_LENGTH 100
+#define MAX_WORDS 10000
+#define BUFFER_SIZE 1000
+#define MAX_LENGTH 10000
 #define NOISE_WORDS 2
 
 int buffer_index = 0;
@@ -25,41 +25,60 @@ int get_character() {
         return getchar();
 }
 
-char get_word(char *word, int limit, int *line_number) {
+int get_word(char *word, int limit, int *line_number) {   
     char *word_ptr = word;
     char character;
-
+    char temp_character;
+ 
     while (isspace(character = get_character()))
-        if (character == '\n') {
-           *line_number = *line_number + 1;
-        }
+        if (character == '\n')
+            *line_number += 1;
 
-    if (character != EOF)
+    if (character != EOF && isalnum(character))
         *word_ptr++ = character;
 
     if (!isalpha(character)) {
+        if (character == '\"')
+            for (character = get_character(); character != '\"'; character = get_character());
+        else if (character == '#')
+            for (character = get_character(); character != '\n'; character = get_character());
+        else if (character == '/') {
+            if ((character = get_character()) == '/')
+                for (character = get_character(); character != '\n'; character = get_character());
+            else if (character == '*') {
+                for (character = get_character(), temp_character = get_character(); character != '*' && temp_character != '/'; character = get_character(), temp_character = get_character())
+                    unget_character(temp_character);
+            } else
+                unget_character(character);
+        } else if (character != '(' && character != '*' && character != '[' && character != '!' && character != '&' && character != '-' && character != '+') 
+            for ( ; !isspace(character) && character != EOF; character = get_character());
+
+        if (character == '\n')
+            unget_character(character);
+
         *word_ptr = '\0';
         return character; 
     }
 
-    for ( ; --limit > 0; word_ptr++)
-        if (!isalnum(*word_ptr = get_character())) {
-            if (!isspace(*word_ptr)) {
-                unget_character(*word_ptr);
-                return (*word_ptr);      
-            } else {
-                if (character == '\n') {
-                    *line_number = *line_number + 1;
-                }
+    for ( ; --limit > 0; ) {
+        char check_character = get_character();
 
-                unget_character(*word_ptr);
+        if (!isalnum(check_character) && check_character != '_') {
+            if (!isspace(check_character)) {
+                unget_character(check_character);
+                return check_character;
+            } else {
+                unget_character(check_character);
                 break;
             }
-        }
-
+        } else
+            *word_ptr++ = check_character;
+    }
+    
     *word_ptr = '\0';
     return word[0];
 }
+
 struct tnode {
     char *word;
     int line_numbers[MAX_WORDS];
@@ -144,6 +163,11 @@ void treeprint(struct tnode *ptr) {
     }
 }
 
+void clear_string(char string[MAX_LENGTH]) {
+    for (int index = strlen(string); index > 0; index--)
+        string[index] = 0;
+}
+
 int main() {
     struct tnode *root;
     char word[MAX_WORDS];
@@ -154,9 +178,9 @@ int main() {
         if (isalpha(word[0]))
             if (!noise_words_checker(word))
                 addtree(&root, word, line_number);
-    }
-
-    printf("\n");
+        
+        clear_string(word);
+     }
  
     treeprint(root);
 
