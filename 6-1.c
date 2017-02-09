@@ -37,9 +37,14 @@ char skip(char target) {
 
     if (character == '#')
         character = get_to('\n');
-    else if (character == '"')
-        character = get_to('"');
-    else if (character == '/') {
+    else if (character == '\"') {
+        char temp_character = get_character();
+
+        if (temp_character != '\'')
+            character = get_to('\"');
+        else 
+            unget_character(temp_character);
+    } else if (character == '/') {
         char temp_character = get_character();
     
         if (temp_character == '/')
