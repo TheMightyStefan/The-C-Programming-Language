@@ -3,27 +3,24 @@
 #include <string.h>
 
 int main(int argc, char *argv[]) {
-    int character = getchar();
-
-    if (strcmp(argv[0], "./lower") == 0)
-        while (character != EOF) {
+    if (strcmp(argv[0], "./lower") == 0) {
+		int character = getchar();
+       
+		 while (character != EOF) {
             putchar(tolower(character));
 
             character = getchar();
         }
-    else if (strcmp(argv[0], "./upper") == 0)
-        while (character != EOF) {
+    } else if (strcmp(argv[0], "./upper") == 0) {
+		 int character = getchar();
+
+		 while (character != EOF) {
             putchar(toupper(character));
 
             character = getchar();
         } 
-    else 
-        //Using lower by default if no specific name is included 
-        while (character != EOF) {
-            putchar(tolower(character));
-    
-            character = getchar();
-        }
+    } else 
+		fprintf(stderr, "ERROR : The file is not named lower or upper\n");
     
     return 0;
 } 
