@@ -1,6 +1,6 @@
 #include <stdio.h>
-int main ()
+void main ()
 {
-    printf("Hello world !");
-    return 0;
+    printf("Hello world !\n");
+    printf("Welcome to Gethub !\n");
 }
